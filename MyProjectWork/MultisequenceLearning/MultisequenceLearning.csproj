@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\source\NeoCortexApi.Parallel\NeoCortexApi.Parallel.csproj" />
+    <ProjectReference Include="..\..\..\source\NeoCortexApi\NeoCortexApi.csproj" />
+    <ProjectReference Include="..\..\..\source\NeoCortexArrayLib\NeoCortexArrayLib.csproj" />
+    <ProjectReference Include="..\..\..\source\NeoCortexEntities\NeoCortexEntities.csproj" />
+  </ItemGroup>
+
+</Project>
