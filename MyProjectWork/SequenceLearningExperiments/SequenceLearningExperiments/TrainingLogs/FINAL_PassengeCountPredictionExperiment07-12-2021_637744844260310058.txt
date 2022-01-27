@@ -1,0 +1,18 @@
+PassengeCountPredictionExperiment07-12-2021_637744844260310058.txt
+******Sequence Starting*****
+cycle : 0 	 Accuracy :0 	 
+cycle : 1 	 Accuracy :0 	 
+cycle : 2 	 Accuracy :1.3245033112582782 	 
+cycle : 3 	 Accuracy :7.9470198675496695 	 
+cycle : 4 	 Accuracy :20.52980132450331 	 
+cycle : 5 	 Accuracy :33.77483443708609 	 
+cycle : 6 	 Accuracy :50.993377483443716 	 
+cycle : 7 	 Accuracy :62.913907284768214 	 
+cycle : 8 	 Accuracy :74.17218543046357 	 
+cycle : 9 	 Accuracy :74.83443708609272 	 
+cycle : 10 	 Accuracy :80.13245033112582 	 
+Cycle: 11 	 Saturated Accuracy : 80.13245033112582 	 Number of times repeated 1
+cycle : 12 	 Accuracy :84.10596026490066 	 
+cycle : 13 	 Accuracy :87.41721854304636 	 
+cycle : 14 	 Accuracy :92.05298013245033 	 
+****Sequence Ending*****

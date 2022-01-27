@@ -1,0 +1,34 @@
+PassengerCountAutomatedTesting06-12-2021637743456000000000.txt
+Actual Value : 34002 	 Predicted Value:27294
+Actual Value : 34002 	 Predicted Value:34002
+Actual Value : 22037 	 Predicted Value:30087
+Actual Value : 22037 	 Predicted Value:31806
+Actual Value : 22037 	 Predicted Value:32224
+Actual Value : 23326 	 Predicted Value:25604
+Actual Value : 23326 	 Predicted Value:32191
+Actual Value : 23326 	 Predicted Value:30299
+Actual Value : 30610 	 Predicted Value:32815
+Actual Value : 30610 	 Predicted Value:34346
+Actual Value : 30610 	 Predicted Value:31589
+Actual Value : 32815 	 Predicted Value:34346
+Actual Value : 32815 	 Predicted Value:32815
+Actual Value : 24435 	 Predicted Value:19852
+Actual Value : 24435 	 Predicted Value:22731
+Actual Value : 24435 	 Predicted Value:22037
+Actual Value : 25604 	 Predicted Value:32191
+Actual Value : 25604 	 Predicted Value:19276
+Actual Value : 25604 	 Predicted Value:24435
+Actual Value : 34346 	 Predicted Value:34002
+Actual Value : 34346 	 Predicted Value:34346
+Actual Value : 26974 	 Predicted Value:23326
+Actual Value : 26974 	 Predicted Value:22593
+Actual Value : 26974 	 Predicted Value:22037
+Actual Value : 33201 	 Predicted Value:33261
+Actual Value : 33201 	 Predicted Value:33201
+Actual Value : 33261 	 Predicted Value:26974
+Actual Value : 33261 	 Predicted Value:19276
+Actual Value : 33261 	 Predicted Value:24435
+Actual Value : 32224 	 Predicted Value:33201
+Actual Value : 32224 	 Predicted Value:33261
+Actual Value : 32224 	 Predicted Value:32224
+ACCURACY OBTAINED: 41.66666666666667
