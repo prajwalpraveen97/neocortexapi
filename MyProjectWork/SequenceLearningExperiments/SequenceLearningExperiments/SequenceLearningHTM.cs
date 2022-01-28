@@ -17,59 +17,11 @@ namespace SequenceLearningExperiment
         /// <summary>
         /// TRAINING FILE PATH
         /// </summary>
-        static readonly string PassengerCountDataFile_MINI = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\TaxiPassengerCountPrediction\TrainingFile_MINI.csv");
-        static readonly string PassengerCountDataFile_FULL = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\TaxiPassengerCountPrediction\TrainingFile_FULL.csv");
+        ///
 
         static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BreastCancer_trainingFile_MINI.csv");
         static readonly string CancerSequenceDataFile2 = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\LungCancer_trainingFile.csv");
         
-        /// <summary>
-        ///     PASSENGERCOUNT PREDICTION EXPERIMENT ENTRY POINT
-        /// </summary>
-        public void InitiatePassengerCountPredictionExperiment()
-        {
-            int inputBits = 72;
-            int maxCycles = 15;
-            //var trainingData = HelperMethods.ReadPassengerDataFromFile(PassengerCountDataFile_FULL);
-            var trainingData = HelperMethods.ReadPassengerDataFromFile(PassengerCountDataFile_MINI);
-            var trainingDataProcessed = HelperMethods.EncodePassengerData(trainingData);
-
-            var trained_HTM_model = Run(inputBits,maxCycles,numColumns, trainingDataProcessed, false);
-            var trained_CortexLayer = trained_HTM_model.Keys.ElementAt(0);
-            var trained_Classifier = trained_HTM_model.Values.ElementAt(0);
-
-            Debug.WriteLine("TESTING TRAINED HTM MODEL ON USERINPUT || TAXI PASSENGER COUNT PREDICTION EXPERIMENT");
-            Console.WriteLine("TESTING TRAINED HTM MODEL ON USERINPUT || TAXI PASSENGER COUNT PREDICTION EXPERIMENT ");
-
-            Debug.WriteLine("PLEASE SELECT MODE OF TESTING 1) MANUAL 2) AUTOMATED :");
-            Console.WriteLine("PLEASE SELECT MODE OF TESTING 1) MANUAL 2) AUTOMATED :");
-            
-            
-            var testChoice = Console.ReadLine();
-
-
-            if (testChoice == "1") {
-                Debug.WriteLine("PLEASE ENTER DATE FOR PREDICTING PASSENGER COUNT:      *note format->dd-mm-yyyy");
-                Console.WriteLine("PLEASE ENTER DATE FOR PREDICTING PASSENGER COUNT:      *note format->dd-mm-yyyy");
-                var userInput = Console.ReadLine();
-                while (!userInput.Equals("q") && userInput != "Q")
-                {
-                    var sdr = HelperMethods.EncodeSingleInput_testingExperiment_1(userInput);
-                    var userLayerOutput = trained_CortexLayer.Compute(sdr, false) as ComputeCycle;
-                    var predictedValuesForUserInput = trained_Classifier.GetPredictedInputValues(userLayerOutput.PredictiveCells.ToArray(), 5);
-                    foreach (var predictedVal in predictedValuesForUserInput)
-                    {
-                        Console.WriteLine("SIMILARITY " + predictedVal.Similarity + " PREDICTED VALUE :" + predictedVal.PredictedInput);
-                    }
-                    Console.WriteLine("TAKING USERINPUT FOR CHECKING PREDICTED PASSENGER COUNT");
-                    userInput = Console.ReadLine();
-                }
-            }
-            else if (testChoice=="2") {
-                    HelperMethods.BeginAutomatedTestingExperiment_1(trainingData, trained_CortexLayer, trained_Classifier);
-                }
-            }
-
         /// <summary>
         /// Cancer Sequence Classification Experiment EntryPoint
         /// V1:- In the following version we are learining sequence element by element and while prediction trying to predict next element,
