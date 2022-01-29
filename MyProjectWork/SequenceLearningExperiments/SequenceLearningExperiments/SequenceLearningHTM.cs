@@ -465,10 +465,12 @@ namespace SequenceLearningExperiment
             {
                 filename = "CancerClassificationExperiment" + filename.Split(" ")[0]+"_" + now.Ticks.ToString() + ".txt";
             }
+            /*
             else
             {
                 filename = "PassengeCountPredictionExperiment" + filename.Split(" ")[0]+"_"+now.Ticks.ToString() + ".txt";
             }
+            */
             string path = System.AppDomain.CurrentDomain.BaseDirectory+"\\TrainingLogs\\" + filename;
             using (StreamWriter swOutput = File.CreateText(path))
             {
