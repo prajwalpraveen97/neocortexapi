@@ -20,51 +20,6 @@ namespace SequenceLearningExperiment
         static readonly string[] CancerSequenceClasses = new string[] { "inactive - exp", "mod. active", "very active", "inactive - virtual" };
         static readonly float[][] CancerSequenceClassesOneHotEncoding = new float[][] { new float[] { 0, 0, 0, 1 }, new float[] { 0, 0, 1, 0 }, new float[] { 0, 1, 0, 0 }, new float[] { 1, 0, 0, 0 } };
 
-        // READING TRAINING DATA
-        /// <summary>
-        ///     Fetch Taxi Data from file
-        /// </summary>
-        /// <param name="dataFilePath">Training Data File Path</param>
-        /// <returns></returns>
-        public static List<Dictionary<string, string>> ReadPassengerDataFromFile(string dataFilePath)
-        {
-            List<Dictionary<string, string>> SequencesCollection = new List<Dictionary<string, string>>();
-
-            int keyForUniqueIndexes = 0;
-
-            if (File.Exists(dataFilePath))
-            {
-
-                using (StreamReader sr = new StreamReader(dataFilePath))
-                {
-                    Dictionary<string, string> Sequence = new Dictionary<string, string>();
-                    while (sr.Peek() >= 0)
-                    {
-                        var line = sr.ReadLine();
-                        string[] values = line.Split(",");
-
-
-                        keyForUniqueIndexes++;
-
-                        var observationPassengerCount = values[1];
-                        var observationDateTime = values[0];
-
-                        if (Sequence.ContainsKey(values[1]))
-                        {
-                            var newKey = values[1] + "," + keyForUniqueIndexes;
-                            Sequence.Add(newKey, observationDateTime);
-                        }
-                        else
-                        {
-                            Sequence.Add(observationPassengerCount, observationDateTime);
-                        }
-                    }
-                    SequencesCollection.Add(Sequence);
-                }
-                return SequencesCollection;
-            }
-            return null;
-        }
         /// <summary>
         ///     Fetch Cancer Peptides data from file
         /// </summary>
@@ -258,54 +213,6 @@ namespace SequenceLearningExperiment
     
         //*********************************************************************************************
         // ENCODING TRAINING DATA
-        /// <summary>
-        ///     Encode Taxi Passenger Data
-        /// </summary>
-        /// <param name="trainingData"></param>
-        /// <returns></returns>
-        public static List<Dictionary<string, int[]>> EncodePassengerData(List<Dictionary<string, string>> trainingData)
-        {
-            List<Dictionary<string, int[]>> ListOfEncodedTrainingSDR = new List<Dictionary<string, int[]>>();
-
-            ScalarEncoder DayEncoder = FetchDayEncoder();
-            ScalarEncoder MonthEncoder = FetchMonthEncoder();
-            ScalarEncoder YearEncoder = FetchYearEncoder();
-            ScalarEncoder DayOfWeekEncoder = FetchWeekDayEncoder();
-
-            foreach (var sequence in trainingData)
-            {
-
-                var tempDictionary = new Dictionary<string, int[]>();
-
-                foreach (var keyValuePair in sequence)
-                {
-
-                    var observationLabel = keyValuePair.Key;
-                    var element = keyValuePair.Value;
-
-                    DateTime observationDateTime = DateTime.Parse(element);
-                    int day = observationDateTime.Day;
-                    int month = observationDateTime.Month;
-                    int year = observationDateTime.Year;
-                    int dayOfWeek = (int)observationDateTime.DayOfWeek;
-
-                    int[] sdr = new int[0];
-
-                    sdr = sdr.Concat(DayEncoder.Encode(day)).ToArray();
-                    sdr = sdr.Concat(MonthEncoder.Encode(month)).ToArray();
-                    sdr = sdr.Concat(YearEncoder.Encode(year)).ToArray();
-                    sdr = sdr.Concat(DayOfWeekEncoder.Encode(dayOfWeek)).ToArray();
-
-                    //    UNCOMMENT THESE LINES TO DRAW SDR BITMAP
-                    //    int[,] twoDimenArray = ArrayUtils.Make2DArray<int>(sdr, 100, 100);
-                    //    var twoDimArray = ArrayUtils.Transpose(twoDimenArray);
-                    //    NeoCortexUtils.DrawBitmap(twoDimArray, 1024, 1024, $"{observationDateTime.Day.ToString()}.png", null);
-                    tempDictionary.Add(observationLabel, sdr);
-                }
-                ListOfEncodedTrainingSDR.Add(tempDictionary);
-            }
-            return ListOfEncodedTrainingSDR;
-        }
 
         /// <summary>
         ///     Encoding Amino Alphabetic Sequences
@@ -438,33 +345,6 @@ namespace SequenceLearningExperiment
                 return ProcessedSequenceDictionary;
             }
             return null;
-        }
-
-        public static Dictionary<float[], float[][]> PassengerCountDataProcessing(Dictionary<string, string> trainingData)
-        {
-            var processedData = new float[trainingData.Count][];
-            var obesrvationLabel = new float[trainingData.Count];
-            var returnDictionary = new Dictionary<float[], float[][]>();
-
-            int index = 0;
-            foreach (var element in trainingData)
-            {
-                var observationDateTime = DateTime.Parse(element.Value);
-                var observationLabel = element.Key;
-
-                var dayOfWeek = (int)observationDateTime.DayOfWeek;
-                var day = observationDateTime.Day;
-                var month = observationDateTime.Month;
-                var year = observationDateTime.Year;
-
-                var processedDatarow = new float[] { day, month, year, dayOfWeek };
-                processedData[index] = processedDatarow;
-                obesrvationLabel[index] = float.Parse(observationLabel) / 73739; // DATA NORMALIZATION
-                index++;
-            }
-
-            returnDictionary.Add(obesrvationLabel, processedData);
-            return returnDictionary;
         }
 
         //*********************************************************************************************
