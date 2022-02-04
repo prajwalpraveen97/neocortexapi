@@ -54,6 +54,7 @@ namespace MultiImageLearningExperiment
                 PredictedSegmentDecrement = 0.1
             };
 
+          
             double max = 20;
 
             Dictionary<string, object> settings = new Dictionary<string, object>()
