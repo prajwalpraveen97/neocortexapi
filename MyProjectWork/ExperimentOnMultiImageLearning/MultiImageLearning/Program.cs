@@ -33,19 +33,20 @@ namespace MultiImageLearningExperiment
 
         private static void RunMultiSimpleSequenceLearningExperiment()
         {
-            Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
+            Dictionary<string, List<string>> sequences = new Dictionary<string, List<string>>();
 
-            sequences.Add("S1", new List<double>(new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, }));
-            sequences.Add("S2", new List<double>(new double[] { 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0 }));
+            //sequences.Add("S1", new List<double>(new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, }));
+            //sequences.Add("S2", new List<double>(new double[] { 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0 }));
 
-            
+            sequences.Add("S2", new List<string>(new string[] { "FAKKLAKKLAKAAL", "FAKKLAKKLAKAL", "FAKKLAKKLAKLAL" }));
+
             // Prototype for building the prediction engine.
             MultiImageLearning experiment = new MultiImageLearning();
             var predictor = experiment.Run(sequences);
          
         }
 
-
+        /*
         private static void RunMultiImageLearningExperiment()
         {
             Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
@@ -74,8 +75,8 @@ namespace MultiImageLearningExperiment
             predictor.Reset();
             PredictNextElement(predictor, list3);
         }
-
-        private static void PredictNextElement(HtmPredictionEngine predictor, double[] list)
+        */
+        private static void PredictNextElement(HtmPredictionEngine predictor, string[] list)
         {
             Debug.WriteLine("------------------------------");
 
