@@ -78,6 +78,9 @@ namespace SequenceLearningExperiment
         /// </summary>
         /// <param name="dataFilePath"></param>
         /// <returns></returns>
+        /// 
+
+        /*
         public static Dictionary<float[][], float[][]> ReadCancerSequencesDataFromFile_LSTM_v2(string dataFilePath)
         {
             List<Dictionary<string, string>> SequencesCollection = new List<Dictionary<string, string>>();
@@ -160,6 +163,7 @@ namespace SequenceLearningExperiment
             }
             return null;
         }
+        */
         /// <summary>
         /// 
         /// </summary>
