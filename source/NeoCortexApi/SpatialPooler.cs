@@ -458,20 +458,20 @@ namespace NeoCortexApi
         public void UpdateDutyCycles(Connections c, int[] overlaps, int[] activeColumns)
         {
             // All columns with overlap are set to 1. Otherwise 0.
-            double[] overlapCycles = new double[c.HtmConfig.NumColumns];
+            double[] overlapFrequencies = new double[c.HtmConfig.NumColumns];
 
             // All active columns are set on 1, otherwise 0.
-            double[] activeCycles = new double[c.HtmConfig.NumColumns];
+            double[] activeColFrequencies = new double[c.HtmConfig.NumColumns];
 
             //
             // if (sourceA[i] > 0) then targetB[i] = 1;
             // This ensures that all values in overlapCycles are set to 1, if column has some overlap.
-            ArrayUtils.GreaterThanXThanSetToYInB(overlaps, overlapCycles, 0, 1);
+            ArrayUtils.GreaterThanXThanSetToYInB(overlaps, overlapFrequencies, 0, 1);
           
             if (activeColumns.Length > 0)
             {
                 // After this step, all rows in activeCycles are set to 1 at the index of active column.
-                ArrayUtils.SetIndexesTo(activeCycles, activeColumns, 1);
+                ArrayUtils.SetIndexesTo(activeColFrequencies, activeColumns, 1);
             }
 
             int period = c.HtmConfig.DutyCyclePeriod;
@@ -480,13 +480,15 @@ namespace NeoCortexApi
                 period = c.SpIterationNum;
             }
 
-            c.HtmConfig.OverlapDutyCycles = CalcActivationFrequency(c.HtmConfig.OverlapDutyCycles, overlapCycles, period);
+            c.HtmConfig.OverlapDutyCycles = CalcEventFrequency(c.HtmConfig.OverlapDutyCycles, overlapFrequencies, period);
 
-            c.HtmConfig.ActiveDutyCycles = CalcActivationFrequency(c.HtmConfig.ActiveDutyCycles, activeCycles, period);
+            c.HtmConfig.ActiveDutyCycles = CalcEventFrequency(c.HtmConfig.ActiveDutyCycles, activeColFrequencies, period);
         }
 
 
         /// <summary>
+        /// Calculates the normalized counter value of the frequency of an event. 
+        /// Event can be overlap or activation of the column.
         /// Updates a duty cycle estimate with a new value. This is a helper function that is used to update several duty cycle variables in
         /// the Column class, such as: overlapDutyCucle, activeDutyCycle, minPctDutyCycleBeforeInh, minPctDutyCycleAfterInh, etc. returns
         /// the updated duty cycle. Duty cycles are updated according to the following formula: <br/>
@@ -501,10 +503,10 @@ namespace NeoCortexApi
         /// <param name="newInput">A new numerical value used to update the duty cycle. Typically 1 or 0</param>
         /// <param name="period">The period of the duty cycle</param>
         /// <remarks>
-        /// This looks a bit complicate. But, simplified, dutycycle is simple counter that counts how many times the column was 
+        /// This looks a bit complicate. But, it is simple normalized counter that counts how many times the column was 
         /// connected to the non-zero input bit (in a case of the overlapp) or how often the column was active (in a case of active).</remarks>
         /// <returns></returns>
-        public static double[] CalcActivationFrequency(double[] dutyCycles, double[] newInput, double period)
+        public static double[] CalcEventFrequency(double[] dutyCycles, double[] newInput, double period)
         {
             return ArrayUtils.Divide(ArrayUtils.AddOffset(ArrayUtils.Multiply(dutyCycles, period - 1), newInput), period);
         }
@@ -625,16 +627,13 @@ namespace NeoCortexApi
 
         /// <summary>
         /// This method increases the permanence values of synapses of columns whose 
-        /// overlap level has been too low. Such columns are identified by having an 
-        /// overlap duty cycle that drops too much below those of their peers. The 
-        /// permanence values for such columns are increased. 
+        /// overlap level is too low. Such columns are identified by having an 
+        /// overlap duty cycle (activation frequency) that drops too much below those of their peers. 
+        /// The permanence values for such columns are increased. 
         /// </summary>
         /// <param name="c"></param>
         public virtual void BumpUpWeakColumns(Connections c)
         {
-            if (c.HtmConfig.IsBumpUpWeakColumnsDisabled)
-                return;
-
             var weakColumns = c.HtmConfig.Memory.Get1DIndexes().Where(i => c.HtmConfig.OverlapDutyCycles[i] < c.HtmConfig.MinOverlapDutyCycles[i]).ToArray();
 
             for (int i = 0; i < weakColumns.Length; i++)
@@ -693,10 +692,10 @@ namespace NeoCortexApi
         /// <param name="c">the <see cref="Connections"/> memory</param>
         /// <param name="perm">permanence values</param>
         /// <remarks>Note: This method services the "sparse" versions of corresponding methods</remarks>
-        public virtual void RaisePermanenceToThresholdSparse(Connections c, double[] perm)
-        {
-            HtmCompute.RaisePermanenceToThresholdSparse(c.HtmConfig, perm);
-        }
+        //public virtual void RaisePermanenceToThresholdSparse(Connections c, double[] perm)
+        //{
+        //    HtmCompute.RaisePermanenceToThresholdSparse(c.HtmConfig, perm);
+        //}
 
         /// <summary>
         /// This method updates the permanence matrix with a column's new permanence values. The column is identified by its index,
@@ -711,7 +710,7 @@ namespace NeoCortexApi
         /// the permanence value is 0.
         /// </param>
         /// <param name="column">The column in the permanence, potential and connectivity matrices</param>
-        /// <param name="maskPotential"></param>
+        /// <param name="maskPotential">Indexes of potential connections to input neurons.</param>
         /// <param name="raisePerm">a boolean value indicating whether the permanence values</param>
         public void UpdatePermanencesForColumnSparse(Connections c, double[] perm, Column column, int[] maskPotential, bool raisePerm)
         {
@@ -1151,6 +1150,7 @@ namespace NeoCortexApi
 
             //
             // Boost factors are NOT recalculated if minimum active duty cycles are all set on 0.
+            // MinActiveDutyCycles is set in UpdateMinDutyCycles and also controlled by HomeostaticPlasticityController.
             if (minActiveDutyCycles.Count(ma => ma > 0) == 0)
             {
                 boostFactors = c.BoostFactors;
