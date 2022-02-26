@@ -133,8 +133,6 @@ namespace NeoCortexApi.Encoders
             return imageBinarizer.GetArrayBinary();
         }
 
-
-
         #endregion
 
         #region Private Methods
