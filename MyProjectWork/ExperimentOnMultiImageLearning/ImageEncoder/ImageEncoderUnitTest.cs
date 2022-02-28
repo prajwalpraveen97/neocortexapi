@@ -36,19 +36,19 @@ namespace NeoCortexApi.Encoders
         }
 
 
-        private static string  EnsureFolderExist(string foldername)
+        private static string  EnsureFolderExist(string Output)
         {   
-            if (!Directory.Exists(foldername))
+            if (!Directory.Exists(Output))
             {
-                Directory.CreateDirectory(foldername);
+                Directory.CreateDirectory(Output);
             }
 
-            while (!Directory.Exists(foldername))
+            while (!Directory.Exists(Output))
             {
                 Thread.Sleep(250);
             }
 
-            return foldername;
+            return Output;
         }
     }
 }
