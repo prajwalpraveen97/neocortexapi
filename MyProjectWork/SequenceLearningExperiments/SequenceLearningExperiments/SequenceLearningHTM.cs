@@ -20,7 +20,7 @@ namespace SequenceLearningExperiment
         ///
 
         static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BreastCancer_trainingFile_MINI.csv");
-        static readonly string CancerSequenceDataFile2 = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\LungCancer_trainingFile.csv");
+        //static readonly string CancerSequenceDataFile2 = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\LUNGCANCER_trainingFile.csv");
         
         /// <summary>
         /// Cancer Sequence Classification Experiment EntryPoint
@@ -45,6 +45,7 @@ namespace SequenceLearningExperiment
 
 
             var testChoice = Console.ReadLine();
+            /*
             if (testChoice == "1")
             {
                 Debug.WriteLine("PLEASE ENTER CANCER SEQUENCE:             *note format->AAAAVVV {AlphabeticSequence}");
@@ -107,100 +108,10 @@ namespace SequenceLearningExperiment
 
                 }
             }
-            else if (testChoice == "2")
-            {
-                HelperMethods.BeginAutomatedTestingExperiment_2(trainingData, trained_CortexLayer, trained_Classifier);
-            }
-        }
-        /// <summary>
-        /// Cancer Sequence Classification Experiment EntryPoint
-        /// V2 :- In the following version we are learning sequence as a whole i.e we are taking as single element.
-        /// </summary>
-        public void InitiateCancerSequenceClassificationExperimentV2()
-        {
-            int inputBits = 1023;
-            int maxCycles = 30;
-            var trainingData = HelperMethods.ReadAndEncodeCancerSequencesDataFromFileV2(CancerSequenceDataFile);
-            
-            var trained_HTM_model = Run(inputBits, maxCycles, numColumns, trainingData, false);
-            var trained_CortexLayer = trained_HTM_model.Keys.ElementAt(0);
-            var trained_Classifier = trained_HTM_model.Values.ElementAt(0);
-
-            Debug.WriteLine("TESTING TRAINED HTM MODEL ON USERINPUT || CANCER SEQUENCE CLASSIFICATION EXPERIMENT");
-            Console.WriteLine("TESTING TRAINED HTM MODEL ON USERINPUT || CANCER SEQUENCE CLASSIFICATION EXPERIMENT");
-
-            Debug.WriteLine("PLEASE SELECT MODE OF TESTING 1) MANUAL 2) AUTOMATED :");
-            Console.WriteLine("PLEASE SELECT MODE OF TESTING 1) MANUAL 2) AUTOMATED :");
-
-
-            var testChoice = Console.ReadLine();
+            */
             if (testChoice == "1")
             {
-                Debug.WriteLine("PLEASE ENTER CANCER SEQUENCE FOR CLSSIFICATION     **format->ABCSC {without spaces}");
-                Console.WriteLine("PLEASE ENTER CANCER SEQUENCE FOR CLSSIFICATION     **format->ABCSC {without spaces}");
-                var userInput = Console.ReadLine();
-                while (!userInput.Equals("q") && userInput != "Q")
-                {
-                    var sdr = HelperMethods.EncodeSingleInput_testingExperiment_2(userInput, false);
-                    int[] concatedSDR = new int[0];
-                    foreach (var elementSDR in sdr) {
-                        concatedSDR = concatedSDR.Concat(elementSDR).ToArray();
-                    }
-                    var predictionList = new List<List<string>>();
-                    var sequence = userInput;
-                    Dictionary<string, List<string>> predictedInput = new Dictionary<string, List<string>>();
-
-                    List<string> possibleClasses = new List<string>();
-
-                    var lyr_Output = trained_CortexLayer.Compute(concatedSDR, false) as ComputeCycle;
-                    var classifierPrediction = trained_Classifier.GetPredictedInputValues(lyr_Output.PredictiveCells.ToArray(), 5);
-
-                    if (classifierPrediction.Count > 0) {
-                        foreach (var prediction in classifierPrediction) {
-                            Console.WriteLine($"Predicted Input :{prediction.PredictedInput} \t ");
-                        }
-                    }
-
-                    //    // CHECK IF INPUT HAS PRODUCED ANY OUTPUTS
-                    //    if (classifierPrediction.Count > 0)
-                    //    {
-                    //        foreach (var prediction in classifierPrediction)
-                    //        {
-                    //            if (j < sequence.Length - 1)
-                    //            {
-                    //                var nextElement = sequence.ElementAt(j + 1);
-                    //                if (prediction.PredictedInput.Split(",")[0] == nextElement.ToString())
-                    //                {
-                    //                    possibleClasses.Add(prediction.PredictedInput);
-                    //                }
-                    //            }
-                    //        }
-
-                    //    }
-                    //}
-
-                    //var Classcounts = possibleClasses.GroupBy(x => x)
-                    //    .Select(g => new { possibleClass = g.Key, Count = g.Count() })
-                    //    .ToList();
-                    //var possibleClass = "";
-                    //if (Classcounts.Count > 0)
-                    //    possibleClass = Classcounts.Max().possibleClass;
-
-                    ////var elmentClass = sequence.ElementAt(0).Value;
-                    ////testingResults.Add($"ELEMENT CLASS :{elmentClass} \t PREDICTED CLASS:{possibleClass}");
-                    ////if (possibleClass.Split("_")[0] == elmentClass.Split("_")[0])
-                    ////{
-                    ////    correctPrediction++;
-                    ////}
-
-                    Console.WriteLine("PLEASE ENTER NEXT SEQUENCE :");
-                    userInput = Console.ReadLine();
-
-                }
-            }
-            else if (testChoice == "2")
-            {
-                //HelperMethods.BeginAutomatedTestingExperimentV2(trainingData, trained_CortexLayer, trained_Classifier);
+                HelperMethods.BeginAutomatedTestingExperiment(trainingData, trained_CortexLayer, trained_Classifier);
             }
         }
 
