@@ -19,8 +19,7 @@ namespace SequenceLearningExperiment
         /// </summary>
         ///
 
-        static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BreastCancer_trainingFile_MINI.csv");
-        //static readonly string CancerSequenceDataFile2 = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\LUNGCANCER_trainingFile.csv");
+        static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BREASTCANCER_trainingFile.csv");
         
         /// <summary>
         /// Cancer Sequence Classification Experiment EntryPoint
