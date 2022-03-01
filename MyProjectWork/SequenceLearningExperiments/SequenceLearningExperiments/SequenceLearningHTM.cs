@@ -45,7 +45,7 @@ namespace SequenceLearningExperiment
 
 
             var testChoice = Console.ReadLine();
-            /*
+            
             if (testChoice == "1")
             {
                 Debug.WriteLine("PLEASE ENTER CANCER SEQUENCE:             *note format->AAAAVVV {AlphabeticSequence}");
@@ -108,8 +108,8 @@ namespace SequenceLearningExperiment
 
                 }
             }
-            */
-            if (testChoice == "1")
+            
+            else if (testChoice == "2")
             {
                 HelperMethods.BeginAutomatedTestingExperiment(trainingData, trained_CortexLayer, trained_Classifier);
             }
