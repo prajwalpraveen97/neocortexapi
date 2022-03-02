@@ -15,20 +15,20 @@ namespace SequenceLearningExperiment
 
 
             /// <summary>
-            /// Experiment-2  [A] HTM :::::----Cancer Sequence Classification i.e classify sequence in 4 Categories i.e Mod. Active , InActive, Very Active, Virtually Acitve
+            /// Experiment-1  [A] HTM :::::----Cancer Sequence Classification i.e classify sequence in 4 Categories i.e Mod. Active , InActive, Very Active, Virtually Acitve
             /// </summary>
 
             SequenceLearningHTM experimentHTM = new SequenceLearningHTM();
             
 
-            Console.WriteLine("HELLO!!! Please Select Experiment To Begin:");
+            Console.WriteLine("HELLO!!! Please Select Experiment To Begin: \n");
             
             //-----------------------------------HTM-----------------------------------
 
-            Console.WriteLine("1) Predict Anti Cancer_V1 Peptides Sequences class || ***HTM***");
+            Console.WriteLine("1) Predict Anti Cancer_V1 Peptides Sequences class \n");
             //Console.WriteLine("2) Predict Anti Cancer_V2 Peptides Sequences class || ***HTM***");
 
-            Console.WriteLine("Please Enter Experimnt Number To Begin the Experiment");
+            Console.WriteLine("Please Enter 1 To Begin the Experiment \n");
             var selectedExperiment = Console.ReadLine();
             
             //**************************************************************************
@@ -36,7 +36,7 @@ namespace SequenceLearningExperiment
 
             if (selectedExperiment == "1")
             {
-                Console.WriteLine("-------------INITIATING CANCER SEQUENCE CLASSIFICATION_v1 EXPERIMENT || ***HTM  ***-------------");
+                Console.WriteLine("-------------INITIATING CANCER SEQUENCE CLASSIFICATION EXPERIMENT || -------------***  HTM  ***-------------");
                 experimentHTM.InitiateCancerSequenceClassificationExperiment();
             }
             else
