@@ -559,90 +559,12 @@ namespace SequenceLearningExperiment
         //*************************TESTING METHODS*******************************************
         
         /// <summary>
-        /// FOR PASSENGER COUNT PREDICTION EXPERIMENT
-        /// </summary>
-        /// <param name="trainingData">TRAINING DATA</param>
-        /// <param name="trained_CortexLayer">TRAINED HTM CORTEX LAYER</param>
-        /// <param name="trained_Classifier">TRAINED HTM CLASSIFIER</param>
-        public static void BeginAutomatedTestingExperiment_1(List<Dictionary<string, string>> trainingData, CortexLayer<object, object> layer, HtmClassifier<string, ComputeCycle> cls)
-        {
-            //** We will use 40% of trainingData for tesing.
-            Random rnd = new Random();
-
-            var testingResults = new List<string>();
-
-            var numberOfDataPoints = (int)(0.7 * trainingData[0].Count);
-            int correctPrediction = 0;
-
-            //FORMULAE -> Summation[Predictied-true]/numberOfDataPoints
-            double MeanAbsoluteError = 0.0;
-
-
-            for (int i = 0; i < numberOfDataPoints; i++)
-            {
-                var index = rnd.Next(1, trainingData[0].Count - 1); // WE ARE USING RANGE FROM 1 because FIRST ELEMENT OF SEQUENCE CANNOT BE PREDICTED *******
-                var sequenceElement = trainingData[0].ElementAt(index);
-
-                var testInput = sequenceElement.Value;
-                var testLabel = trainingData[0].ElementAt(index + 1).Key;
-
-                var sdr = EncodeSingleInput_testingExperiment_1(testInput);
-                var lyrOutput = layer.Compute(sdr, false) as ComputeCycle;
-                var predictedValues = cls.GetPredictedInputValues(lyrOutput.PredictiveCells.ToArray(), 3);
-                Boolean IsPredictionCorrect = false;
-                foreach (var prediction in predictedValues)
-                {
-                    testingResults.Add($"Actual Value : {testLabel} \t Predicted Value:{prediction.PredictedInput}");
-                    Console.WriteLine($"Actual Value : {testLabel} \t Predicted Value:{prediction.PredictedInput}");
-                    if (prediction.PredictedInput == testLabel)
-                    {
-                        IsPredictionCorrect = true;
-                        break;
-                    }
-                    else
-                    {
-                        MeanAbsoluteError += (double.Parse(prediction.PredictedInput) - double.Parse(testLabel));
-                    }
-                }
-
-
-                if (IsPredictionCorrect)
-                {
-                    correctPrediction++;
-                }
-
-            }
-            if (MeanAbsoluteError < 0) { MeanAbsoluteError = 0 - MeanAbsoluteError; }
-            MeanAbsoluteError = MeanAbsoluteError / trainingData[0].Count;
-            Console.WriteLine($"Mean Absolute Error : {MeanAbsoluteError}");
-
-            double accuracy = ((double)correctPrediction / numberOfDataPoints) * 100;
-            Console.WriteLine($"AUTOMATED TESTING COMPLELETED");
-            Console.WriteLine($"ACCURACY OBTAINED: {accuracy}");
-            testingResults.Add($"ACCURACY OBTAINED: {accuracy}");
-
-            DateTime now = DateTime.Now;
-            long n = long.Parse(now.ToString("yyyyMMddHHmmss"));
-            string filename = "CancerSequenceAutomatedTesting" + now.ToString("g").Split(" ")[0] + n + ".txt";
-            string path = System.AppDomain.CurrentDomain.BaseDirectory + "\\TestingLogs\\" + filename;
-            using (StreamWriter swOutput = File.CreateText(path))
-            {
-                swOutput.WriteLine($"{filename}");
-                foreach (var result in testingResults)
-                {
-                    swOutput.WriteLine(result);
-                }
-            }
-
-        }
-
-        /// <summary>
         ///  CANCER SEQUENCE CLASSIFICATION EXPERIMENT V1
         /// </summary>
         /// <param name="trainingData">TRAINING DATA</param>
         /// <param name="trained_CortexLayer">TRAINED HTM CORTEX LAYER</param>
         /// <param name="trained_Classifier">TRAINED HTM CLASSIFIER</param>
-        public static void BeginAutomatedTestingExperiment_2(List<Dictionary<string, string>> trainingData, CortexLayer<object, object> trained_CortexLayer, HtmClassifier<string, ComputeCycle> trained_Classifier)
+        public static void BeginAutomatedTestingExperiment(List<Dictionary<string, string>> trainingData, CortexLayer<object, object> trained_CortexLayer, HtmClassifier<string, ComputeCycle> trained_Classifier)
         {
             Random rnd = new Random();
 
