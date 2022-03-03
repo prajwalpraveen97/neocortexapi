@@ -19,7 +19,7 @@ namespace SequenceLearningExperiment
         /// </summary>
         ///
 
-        static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BREASTCANCER_trainingFile.csv");
+        static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BreastCancer_trainingFile_MINI.csv");
         
         /// <summary>
         /// Cancer Sequence Classification Experiment EntryPoint
@@ -47,18 +47,18 @@ namespace SequenceLearningExperiment
             
             if (testChoice == "1")
             {
-                Debug.WriteLine("PLEASE ENTER CANCER SEQUENCE:             *note format->AAAAVVV {AlphabeticSequence}");
-                Console.WriteLine("PLEASE ENTER CANCER SEQUENCE:            *note format->AAAAVVV {AlphabeticSequence}");
+                Debug.WriteLine("PLEASE ENTER CANCER SEQUENCE:   #note format->AAAAVVV {AlphabeticSequence}");
+                Console.WriteLine("PLEASE ENTER CANCER SEQUENCE:   #note format->AAAAVVV {AlphabeticSequence}");
                 var userInput = Console.ReadLine();
                 while (!userInput.Equals("q") && userInput != "Q")
                 {
-                    var ElementSDRs = HelperMethods.EncodeSingleInput_testingExperiment_2(userInput,false);
+                    var ElementSDRs = HelperMethods.EncodeSingleInput_testingExperiment(userInput,false);
                     List<string> possibleClasses = new List<string>();
 
                     for (int i = 0; i < userInput.Length; i++) {
 
                         var element = userInput.ElementAt(i);
-                        var elementSDR = HelperMethods.EncodeSingleInput_testingExperiment_2(element.ToString(), true);
+                        var elementSDR = HelperMethods.EncodeSingleInput_testingExperiment(element.ToString(), true);
 
                         var lyr_Output = trained_CortexLayer.Compute(elementSDR[0], false) as ComputeCycle;
                         var classifierPrediction = trained_Classifier.GetPredictedInputValues(lyr_Output.PredictiveCells.ToArray(), 5);
@@ -365,6 +365,13 @@ namespace SequenceLearningExperiment
             //****************DISPLAY STATUS OF EXPERIMENT
             Debug.WriteLine("-------------------TRAINING END------------------------");
             Console.WriteLine("-----------------TRAINING END------------------------");
+
+            Debug.WriteLine("-------------------SEQUENCE ANALYSIS STARTED---------------------");
+            Console.WriteLine("-------------------SEQUENCE ANALYSIS STARTED------------------------");
+
+            //REMOVE COMMENT TO OBTAIN TRAINING LOGS
+
+            /* 
             Debug.WriteLine("-------------------WRTING TRAINING OUTPUT LOGS---------------------");
             Console.WriteLine("-------------------WRTING TRAINING OUTPUT LOGS------------------------");
             //*****************
@@ -375,12 +382,12 @@ namespace SequenceLearningExperiment
             {
                 filename = "CancerClassificationExperiment" + filename.Split(" ")[0]+"_" + now.Ticks.ToString() + ".txt";
             }
-            /*
+            
             else
             {
                 filename = "PassengeCountPredictionExperiment" + filename.Split(" ")[0]+"_"+now.Ticks.ToString() + ".txt";
             }
-            */
+            
             string path = System.AppDomain.CurrentDomain.BaseDirectory+"\\TrainingLogs\\" + filename;
             using (StreamWriter swOutput = File.CreateText(path))
             {
@@ -399,6 +406,7 @@ namespace SequenceLearningExperiment
 
             Debug.WriteLine("-------------------TRAINING LOGS HAS BEEN CREATED---------------------");
             Console.WriteLine("-------------------TRAINING LOGS HAS BEEN CREATED------------------------");
+            */
 
             var returnDictionary = new Dictionary<CortexLayer<object,object>, HtmClassifier<string,ComputeCycle>>();
             returnDictionary.Add(layer1, cls);

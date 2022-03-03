@@ -21,18 +21,15 @@ namespace SequenceLearningExperiment
             SequenceLearningHTM experimentHTM = new SequenceLearningHTM();
             
 
-            Console.WriteLine("HELLO!!! Please Select Experiment To Begin: \n");
+            Console.WriteLine("HELLO!!! Welcome to Cancer Sequence Learning Experiment: \n");
             
             //-----------------------------------HTM-----------------------------------
 
             Console.WriteLine("1) Predict Anti Cancer_V1 Peptides Sequences class \n");
-            //Console.WriteLine("2) Predict Anti Cancer_V2 Peptides Sequences class || ***HTM***");
 
             Console.WriteLine("Please Enter 1 To Begin the Experiment \n");
             var selectedExperiment = Console.ReadLine();
-            
-            //**************************************************************************
-            //                               HTM
+
 
             if (selectedExperiment == "1")
             {

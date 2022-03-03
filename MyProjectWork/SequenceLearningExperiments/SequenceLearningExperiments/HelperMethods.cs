@@ -412,7 +412,9 @@ namespace SequenceLearningExperiment
         
         /// <summary>
         ///         ENCODE USER INPUT 
-        /// </summary>
+        /// </summary> 
+
+        /*
         public static int[] EncodeSingleInput_testingExperiment_1(string userInput)
         {
 
@@ -434,7 +436,9 @@ namespace SequenceLearningExperiment
             sdr = sdr.Concat(WeekDayEncoder.Encode(weekDay)).ToArray();
             return sdr;
         }
-        public static List<int[]> EncodeSingleInput_testingExperiment_2(string userInput, Boolean EncodeSingleAlphabet)
+        */
+
+        public static List<int[]> EncodeSingleInput_testingExperiment(string userInput, Boolean EncodeSingleAlphabet)
         {
 
             var alphabetEncoder = FetchAlphabetEncoder();
@@ -463,7 +467,9 @@ namespace SequenceLearningExperiment
 
             return Encoded_Alphabet_SDRs;
         }
-        public static int[] EncodeSingleInput_testingExperiment_3(string userInput) 
+
+        /*
+        public static int[] EncodeSingleInput_testingExperiment_2(string userInput) 
         {
             var alphabetEncoder = FetchAlphabetEncoder();
             var encodedSDR = new int[0];
@@ -474,6 +480,8 @@ namespace SequenceLearningExperiment
             }
             return encodedSDR;
         }
+        */
+
         //***********************************************************************************************
 
         //**********************************FETCHING ENCODERS SECTION****************************************
@@ -482,6 +490,9 @@ namespace SequenceLearningExperiment
         ///         FETCH ENCODERS 
         /// </summary>
         /// <returns> SCALAR ENCODERS</returns>
+        /// 
+
+        /*
         public static ScalarEncoder FetchWeekDayEncoder()
         {
             ScalarEncoder MonthEncoder = new ScalarEncoder(new Dictionary<string, object>()
@@ -490,7 +501,7 @@ namespace SequenceLearningExperiment
                 { "N", 11},
                 { "MinVal", (double)0}, // Min value = (0).
                 { "MaxVal", (double)7}, // Max value = (7).
-                { "Periodic", true}, // Since Monday would repeat again.
+                { "Periodic", true},
                 { "Name", "WeekDay"},
                 { "ClipInput", true},
             });
@@ -502,8 +513,8 @@ namespace SequenceLearningExperiment
             {
                 { "W", 3},
                 { "N", 35},
-                { "MinVal", (double)1}, // Min value = (0).
-                { "MaxVal", (double)32}, // Max value = (7).
+                { "MinVal", (double)1}, // Min value = (1).
+                { "MaxVal", (double)32}, // Max value = (32).
                 { "Periodic", true},
                 { "Name", "Date"},
                 { "ClipInput", true},
@@ -517,9 +528,9 @@ namespace SequenceLearningExperiment
             {
                 { "W", 3},
                 { "N", 15},
-                { "MinVal", (double)1}, // Min value = (0).
-                { "MaxVal", (double)12}, // Max value = (7).
-                { "Periodic", true}, // Since Monday would repeat again.
+                { "MinVal", (double)1}, // Min value = (1).
+                { "MaxVal", (double)12}, // Max value = (12).
+                { "Periodic", true},
                 { "Name", "Month"},
                 { "ClipInput", true},
             });
@@ -533,12 +544,14 @@ namespace SequenceLearningExperiment
                 { "N", 11},
                 { "MinVal", (double)2018}, // Min value = (2018).
                 { "MaxVal", (double)2022}, // Max value = (2021).
-                { "Periodic", false}, // Since Monday would repeat again.
+                { "Periodic", false},
                 { "Name", "Year"},
                 { "ClipInput", true},
             });
             return YearEncoder;
         }
+        */
+
         public static ScalarEncoder FetchAlphabetEncoder()
         {
             ScalarEncoder AlphabetEncoder = new ScalarEncoder(new Dictionary<string, object>()
@@ -559,7 +572,7 @@ namespace SequenceLearningExperiment
         //*************************TESTING METHODS*******************************************
         
         /// <summary>
-        ///  CANCER SEQUENCE CLASSIFICATION EXPERIMENT V1
+        ///  CANCER SEQUENCE CLASSIFICATION EXPERIMENT
         /// </summary>
         /// <param name="trainingData">TRAINING DATA</param>
         /// <param name="trained_CortexLayer">TRAINED HTM CORTEX LAYER</param>
@@ -590,9 +603,10 @@ namespace SequenceLearningExperiment
                     // INVOLVES INCLUDING "originalKey +,{Number} " , therefore To fetch 
                     // original key we are spliting the element key.
                     // example A,7  F,23 and so on.
+
                     var elementString = element.Key.Split(",")[0];
 
-                    var elementSDR = EncodeSingleInput_testingExperiment_2(elementString, true);
+                    var elementSDR = EncodeSingleInput_testingExperiment(elementString, true);
 
                     var lyr_Output = trained_CortexLayer.Compute(elementSDR[0], false) as ComputeCycle;
                     var classifierPrediction = trained_Classifier.GetPredictedInputValues(lyr_Output.PredictiveCells.ToArray(), 5);
