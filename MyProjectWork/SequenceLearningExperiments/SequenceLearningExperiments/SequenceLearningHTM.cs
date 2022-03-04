@@ -129,11 +129,13 @@ namespace SequenceLearningExperiment
 
             // HTM CLASSIFIER
             HtmClassifier<string, ComputeCycle> cls = new HtmClassifier<string, ComputeCycle>();
+
             // CORTEX LAYER
             CortexLayer<object, object> layer1 = new CortexLayer<object, object>("L1");
 
             // HPA IS_IN_STABLE STATE FLAG
             bool isInStableState = false;
+
             // LEARNING ACTIVATION FLAG
             bool learn = true;
 
@@ -141,8 +143,9 @@ namespace SequenceLearningExperiment
             int newbornCycle = 0;
 
             var OUTPUT_LOG_LIST = new List<Dictionary<int, string>>();
-            var OUTPUT_LOG = new Dictionary<int, string>();
-            var OUTPUT_trainingAccuracy_graph = new List<Dictionary<int, double>>();
+            //var OUTPUT_LOG = new Dictionary<int, string>();
+            //var OUTPUT_trainingAccuracy_graph = new List<Dictionary<int, double>>();
+
             // HOMOSTATICPLASTICITY CONTROLLER
             HomeostaticPlasticityController hpa = new HomeostaticPlasticityController(mem, Sequences.Count, (isStable, numPatterns, actColAvg, seenInputs) =>
             {

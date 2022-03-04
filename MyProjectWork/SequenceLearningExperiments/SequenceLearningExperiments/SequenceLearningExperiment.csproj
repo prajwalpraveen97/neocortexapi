@@ -154,15 +154,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Cntk.Core.Managed-2.7">
-      <HintPath>..\..\..\..\CNTK\x64\CNTKCSTrainingCPUOnlyExamples.Debug\Cntk.Core.Managed-2.7.dll</HintPath>
-    </Reference>
-    <Reference Include="CNTKCSTrainingCPUOnlyExamples">
-      <HintPath>..\..\..\..\CNTK\x64\CNTKCSTrainingCPUOnlyExamples.Debug\CNTKCSTrainingCPUOnlyExamples.exe</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="TestingLogs\" />
     <Folder Include="TrainingLogs\" />
   </ItemGroup>

@@ -27,7 +27,7 @@ namespace SequenceLearningExperiment
 
             Console.WriteLine("1) Predict Anti Cancer_V1 Peptides Sequences class \n");
 
-            Console.WriteLine("Please Enter 1 To Begin the Experiment \n");
+            Console.WriteLine("Please Press 1 To Begin the Experiment \n");
             var selectedExperiment = Console.ReadLine();
 
 
