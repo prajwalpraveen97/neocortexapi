@@ -74,59 +74,6 @@ namespace SequenceLearningExperiment
             return null;
         }
 
-        /*
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dataFilePath"></param>
-        /// <returns></returns>
-        public static List<Dictionary<string, int[]>> ReadAndEncodeCancerSequencesDataFromFileV2(string dataFilePath)
-        {
-            List<Dictionary<string, int[]>> SequencesCollection = new List<Dictionary<string, int[]>>();
-            ScalarEncoder encoder_Alphabets = FetchAlphabetEncoder();
-            int keyForUniqueIndexes = 0;
-
-            if (File.Exists(dataFilePath))
-            {
-
-                using (StreamReader sr = new StreamReader(dataFilePath))
-                {
-                    while (sr.Peek() >= 0)
-                    {
-                        var line = sr.ReadLine();
-                        string[] values = line.Split(",");
-
-
-                        string label = values[1];
-                        string sequenceString = values[0];
-                        Dictionary<string, int[]> tempDictionary = new Dictionary<string, int[]>();
-
-                        if (sequenceString.Length < 33)
-                        {
-                            int remainingLength = 33 - sequenceString.Length;
-                            for (int i = 0; i < remainingLength; i++)
-                            {
-                                sequenceString = sequenceString + "Z";
-                            }
-                        }
-
-                        int[] sdr = new int[0];
-                        foreach (var alphabet in sequenceString)
-                        {
-                            sdr = sdr.Concat(encoder_Alphabets.Encode(char.ToUpper(alphabet) - 64)).ToArray();
-                        }
-                        tempDictionary.Add(label, sdr);
-                        SequencesCollection.Add(tempDictionary);
-                    }
-
-                }
-
-                return SequencesCollection;
-            }
-            return null;
-        }
-        */
-    
         //*********************************************************************************************
         // ENCODING TRAINING DATA
 
