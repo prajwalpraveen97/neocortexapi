@@ -123,42 +123,6 @@ namespace SequenceLearningExperiment
             return ListOfEncodedTrainingSDR;
         }
 
-        /*
-        public static Dictionary<string, int[]> EncodeCancerSequencesApproach2(List<Dictionary<string, string>> trainingData)
-        {
-
-
-            var tempDictionary = new Dictionary<string, int[]>();
-            ScalarEncoder encoder_Alphabets = FetchAlphabetEncoder();
-
-            foreach (var sequence in trainingData)
-            {
-                int keyForUniqueIndex = 0;
-                int index = 0;
-
-                int[] sdr = new int[0];
-                var elementLabel = "";
-                foreach (var element in sequence)
-                {
-                    keyForUniqueIndex++;
-                    elementLabel = element.Value.Split("_")[0];
-                    var elementKey = element.Key;
-
-                    sdr = sdr.Concat(encoder_Alphabets.Encode(char.ToUpper(element.Key.ElementAt(0)) - 64)).ToArray();
-                    //UNCOMMENT THESE LINES TO DRAW SDR BITMAP
-                    //int[,] twoDimenArray = ArrayUtils.Make2DArray<int>(ElementWiseSdrList[ElementWiseSdrList.Count - 1], 100, 100);
-                    //    var twoDimArray = ArrayUtils.Transpose(twoDimenArray
-                    // NeoCortexUtils.DrawBitmap(twoDimArray, 1024, 1024, $"{observationLabel.ToString()}.png", null);
-
-
-                }
-
-                tempDictionary.Add(elementLabel, sdr);
-            }
-            return tempDictionary;
-        }
-        */
-
         public static Dictionary<float[][], float[][]> CancerSequenceDataProcessing(List<Dictionary<string, string>> trainingData)
         {
 

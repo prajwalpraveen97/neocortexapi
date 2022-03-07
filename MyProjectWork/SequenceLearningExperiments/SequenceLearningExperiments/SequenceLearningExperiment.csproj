@@ -30,24 +30,6 @@
     <None Update="Logs\sample.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="OutPutSnaps\OUTPUT_1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="OutPutSnaps\OutPut_1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="OutPutSnaps\OUTPUT_2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="OutPutSnaps\OutPut_2.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="OutPutSnaps\Passengercntexp1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="OutPutSnaps\PASSENGER_COUNT_EXPERIMENT_OUTPUT_1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="TrainingFiles\CancerSequenceClassification\BreastCancer_trainingFile_MINI.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -154,7 +136,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestingLogs\" />
     <Folder Include="TrainingLogs\" />
   </ItemGroup>
 
