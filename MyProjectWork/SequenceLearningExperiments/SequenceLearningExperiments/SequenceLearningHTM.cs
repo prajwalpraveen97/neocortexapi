@@ -12,15 +12,44 @@ namespace SequenceLearningExperiment
 {
     class SequenceLearningHTM
     {
+
+        //sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 5.0, 4.0, 3.0, 7.0, 1.0, 9.0, 12.0, 11.0, 12.0, 13.0, 14.0, 11.0, 12.0, 14.0, 5.0, 7.0, 6.0, 9.0, 3.0, 4.0, 3.0, 4.0, 3.0, 4.0 }));
+        //sequences.Add("S2", new List<double>(new double[] { 0.8, 2.0, 0.0, 3.0, 3.0, 4.0, 5.0, 6.0, 5.0, 7.0, 2.0, 7.0, 1.0, 9.0, 11.0, 11.0, 10.0, 13.0, 14.0, 11.0, 7.0, 6.0, 5.0, 7.0, 6.0, 5.0, 3.0, 2.0, 3.0, 4.0, 3.0, 4.0 }));
+
+        //sequences.Add("S1", new List<double>(new double[] { 2.0, 4.0, 6.0, 8.0,  10.0, 12.0}));
+        //sequences.Add("S2", new List<double>(new double[] { 3.0, 6.0, 9.0, 12.0, 15.0, 18.0}));
+
+        //sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 3.0, 5.0, 7.0 }));
+        //sequences.Add("S2", new List<double>(new double[] { 2.0, 4.0, 6.0, 8.0, 10.00 }));
+
+        // List of Prime Numbers from 0 to 100
+        //sequences.Add("S1", new List<double>(new double[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}));
+
+        //sequences.Add("S3", new List<double>(new double[] { 4, 6, 8, 9, 10, 12, 14, 15, 16 }));
+        //sequences.Add("S2", new List<double>(new double[] { 41, 43, 47,  53, 59, 61, 67, 71,73, 79, 83, 89, 97 }));
+
+
+        // List of Composite Numbers from 1 to 100          { F, A, K, L , M, 12, 14, 15,16 }));
+        //sequences.Add("S3", new List<double>(new double[] { 4, 6, 8, 9, 10, 12, 14, 15,16 }));
+        //sequences.Add("S4", new List<double>(new double[] {18, 20, 21, 22, 24, 25,26, 27, 28 }));
+        //sequences.Add("S5", new List<double>(new double[] {30, 32, 33, 34, 35, 36, 38, 39, 40 }));
+        //sequences.Add("S6", new List<double>(new double[] {42, 44, 45, 46, 48, 49, 50, 51, 52 }));
+        // sequences.Add("S7", new List<double>(new double[] {54, 55, 56, 57, 58, 60, 62, 63, 64 }));
+        // sequences.Add("S8", new List<double>(new double[] {65, 66, 68, 69, 70, 72, 74, 75, 76 }));
+        // sequences.Add("S9", new List<double>(new double[] {77, 78, 80, 81, 82, 84, 85, 86, 87 }));
+        // sequences.Add("S10", new List<double>(new double[] {88, 90, 91, 92, 93, 94, 95, 96, 98, 99, 100 }));
+
         static readonly int numColumns = 2048;
 
         /// <summary>
         /// TRAINING FILE PATH
+        /// Cancer Sequences
         /// </summary>
         ///
 
         static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BreastCancer_trainingFile_MINI.csv");
-        
+        //static readonly string CancerSequenceDataFile = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + @"\TrainingFiles\CancerSequenceClassification\BREASTCANCER_trainingFile.csv");
+
         /// <summary>
         /// Cancer Sequence Classification Experiment EntryPoint
         /// V1:- In the following version we are learining sequence element by element and while prediction trying to predict next element,
