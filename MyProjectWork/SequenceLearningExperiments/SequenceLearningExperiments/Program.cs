@@ -19,7 +19,14 @@ namespace SequenceLearningExperiment
             /// </summary>
 
             SequenceLearningHTM experimentHTM = new SequenceLearningHTM();
-            
+
+            Console.WriteLine("######## ########    ###    ##     ##    ##    ##  #######   #######  ########  #### ########  ######  ");
+            Console.WriteLine("   ##    ##         ## ##   ###   ###    ###   ## ##     ## ##     ## ##     ##  ##  ##       ##    ## ");
+            Console.WriteLine("   ##    ##        ##   ##  #### ####    ####  ## ##     ## ##     ## ##     ##  ##  ##       ##       ");
+            Console.WriteLine("   ##    ######   ##     ## ## ### ##    ## ## ## ##     ## ##     ## ########   ##  ######    ######  ");
+            Console.WriteLine("   ##    ##       ######### ##     ##    ##  #### ##     ## ##     ## ##     ##  ##  ##             ## ");
+            Console.WriteLine("   ##    ##       ##     ## ##     ##    ##   ### ##     ## ##     ## ##     ##  ##  ##       ##    ## ");
+            Console.WriteLine("   ##    ######## ##     ## ##     ##    ##    ##  #######   #######  ########  #### ########  ######  ");
 
             Console.WriteLine("HELLO!!! Welcome to Cancer Sequence Learning Experiment: \n");
             
