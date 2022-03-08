@@ -20,6 +20,8 @@ namespace SequenceLearningExperiment
 
             SequenceLearningHTM experimentHTM = new SequenceLearningHTM();
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
             Console.WriteLine("######## ########    ###    ##     ##    ##    ##  #######   #######  ########  #### ########  ######  ");
             Console.WriteLine("   ##    ##         ## ##   ###   ###    ###   ## ##     ## ##     ## ##     ##  ##  ##       ##    ## ");
             Console.WriteLine("   ##    ##        ##   ##  #### ####    ####  ## ##     ## ##     ## ##     ##  ##  ##       ##       ");
@@ -27,7 +29,9 @@ namespace SequenceLearningExperiment
             Console.WriteLine("   ##    ##       ######### ##     ##    ##  #### ##     ## ##     ## ##     ##  ##  ##             ## ");
             Console.WriteLine("   ##    ##       ##     ## ##     ##    ##   ### ##     ## ##     ## ##     ##  ##  ##       ##    ## ");
             Console.WriteLine("   ##    ######## ##     ## ##     ##    ##    ##  #######   #######  ########  #### ########  ######  ");
+            Console.WriteLine("\n");
 
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("HELLO!!! Welcome to Cancer Sequence Learning Experiment: \n");
             
             //-----------------------------------HTM-----------------------------------

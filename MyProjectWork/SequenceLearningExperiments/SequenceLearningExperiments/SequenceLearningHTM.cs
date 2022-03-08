@@ -65,6 +65,7 @@ namespace SequenceLearningExperiment
             var trained_CortexLayer = trained_HTM_model.Keys.ElementAt(0);
             var trained_Classifier = trained_HTM_model.Values.ElementAt(0);
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Debug.WriteLine("TESTING TRAINED HTM MODEL ON USERINPUT || CANCER SEQUENCE CLASSIFICATION EXPERIMENT");
             Console.WriteLine("TESTING TRAINED HTM MODEL ON USERINPUT || CANCER SEQUENCE CLASSIFICATION EXPERIMENT");
 
