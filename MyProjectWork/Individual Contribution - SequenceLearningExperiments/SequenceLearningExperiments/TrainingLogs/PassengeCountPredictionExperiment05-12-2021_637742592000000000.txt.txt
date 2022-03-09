@@ -1,0 +1,35 @@
+PassengeCountPredictionExperiment05-12-2021_637742592000000000.txt
+ * ***Sequence Starting*****
+cycle : 0 	 Accuracy :0 	 
+cycle : 1 	 Accuracy :0 	 
+cycle : 2 	 Accuracy :3.225806451612903 	 
+cycle : 3 	 Accuracy :19.35483870967742 	 
+cycle : 4 	 Accuracy :35.483870967741936 	 
+cycle : 5 	 Accuracy :51.61290322580645 	 
+cycle : 6 	 Accuracy :77.41935483870968 	 
+cycle : 7 	 Accuracy :83.87096774193549 	 
+cycle : 8 	 Accuracy :93.54838709677419 	 
+cycle : 9 	 Accuracy :96.7741935483871 	 
+Cycle : 10 	  Accuracy:100 	 Number of times repeated 1
+Cycle : 11 	  Accuracy:100 	 Number of times repeated 2
+Cycle: 12 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 1
+Cycle: 13 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 2
+Cycle: 14 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 3
+Cycle: 15 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 4
+Cycle: 16 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 5
+Cycle: 17 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 6
+Cycle: 18 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 7
+Cycle: 19 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 8
+Cycle: 20 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 9
+Cycle: 21 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 10
+Cycle: 22 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 11
+Cycle: 23 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 12
+Cycle: 24 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 13
+Cycle: 25 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 14
+Cycle: 26 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 15
+Cycle: 27 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 16
+Cycle: 28 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 17
+Cycle: 29 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 18
+Cycle: 30 	 Saturated Accuracy : 96.7741935483871 	 Number of times repeated 19
+Cycle: 31 	 Accuracy:96.7741935483871 	 Number of times repeated 20
+****Sequence Ending*****

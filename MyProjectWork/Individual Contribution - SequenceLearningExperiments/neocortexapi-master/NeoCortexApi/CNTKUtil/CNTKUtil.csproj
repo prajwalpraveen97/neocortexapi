@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CNTK.CPUOnly" Version="2.7.0" />
+		<PackageReference Include="ImageBinarizer" Version="1.0.0" />
+		<PackageReference Include="OpenCvSharp4.Windows" Version="4.5.3.20210725" />
+	</ItemGroup>
+</Project>
