@@ -262,6 +262,7 @@ namespace SequenceLearningExperiment
         }
         */
 
+        
         public static List<int[]> EncodeSingleInput_testingExperiment(string userInput, Boolean EncodeSingleAlphabet)
         {
 
@@ -291,7 +292,8 @@ namespace SequenceLearningExperiment
 
             return Encoded_Alphabet_SDRs;
         }
-
+        
+        
         /*
         public static int[] EncodeSingleInput_testingExperiment_2(string userInput) 
         {
