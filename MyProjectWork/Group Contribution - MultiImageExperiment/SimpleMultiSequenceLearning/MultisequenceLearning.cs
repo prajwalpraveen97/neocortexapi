@@ -99,7 +99,7 @@ namespace SimpleMultiSequenceLearning
                 LocalAreaDensity = -1,
                 NumActiveColumnsPerInhArea = 0.02 * numColumns_Alpha,
                 PotentialRadius = 65/*(int)(0.15 * inputBits_Alpha)*/,
-                //InhibitionRadius = 15,
+                InhibitionRadius = 15,
 
                 MaxBoost = 10.0,
                 DutyCyclePeriod = 25,
