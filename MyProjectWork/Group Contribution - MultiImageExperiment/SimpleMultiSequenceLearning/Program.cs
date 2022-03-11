@@ -109,15 +109,9 @@ namespace SimpleMultiSequenceLearning
             // RunMultiSequenceLearningExperiment(SequenceDataFile);
 
             MyHelperMethod MultiSequenceForImage = new MyHelperMethod();
-            MultiSequenceForImage.BinarizeImage(InputPicPath, OutputPicPath);
-
-            int width = 30;
-            int height = 30;
-            //MultiSequenceForImage.LearningInLayer(width, height, OutputPicPath);
-
-
-
-            Console.WriteLine("EncodeAndSaveAsImage.....");
+            int imageheight = 30;
+            int imagewidth = 30;
+            MultiSequenceForImage.BinarizeImageTraining(InputPicPath, OutputPicPath, imageheight, imagewidth);
         }
 
         private static void RunMultiSequenceLearningExperiment(string datafilepath)
@@ -200,27 +194,27 @@ namespace SimpleMultiSequenceLearning
 
             int BufferSize;
 
-/*            Console.WriteLine("Enter Total number of sequences you want to give..");
+            /*            Console.WriteLine("Enter Total number of sequences you want to give..");
 
-            BufferSize = Convert.ToInt32(Console.ReadLine());
+                        BufferSize = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine($"Array Size is : {BufferSize}");
+                        Console.WriteLine($"Array Size is : {BufferSize}");
 
-            Console.WriteLine("Enter Sequence of Numbers to be Predicted....");
+                        Console.WriteLine("Enter Sequence of Numbers to be Predicted....");
 
-            double[] buffer = new double[BufferSize];
+                        double[] buffer = new double[BufferSize];
 
-            for (int i = 0; i < BufferSize; i++)
-            {
-                buffer[i] = Convert.ToDouble(Console.ReadLine());
-            }
+                        for (int i = 0; i < BufferSize; i++)
+                        {
+                            buffer[i] = Convert.ToDouble(Console.ReadLine());
+                        }
 
-            Console.WriteLine($"Entered Number are : ");
-            for (int i = 0; i < BufferSize; i++)
-            {
-                Console.Write("{0}", buffer[i]);
-                Console.Write("\t");
-            }*/
+                        Console.WriteLine($"Entered Number are : ");
+                        for (int i = 0; i < BufferSize; i++)
+                        {
+                            Console.Write("{0}", buffer[i]);
+                            Console.Write("\t");
+                        }*/
 
             Console.WriteLine("\n");
             /*predictor.Reset();
