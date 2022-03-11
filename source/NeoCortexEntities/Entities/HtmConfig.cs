@@ -370,6 +370,7 @@ namespace NeoCortexApi.Entities
         /// The random number generator
         /// </summary>
         public Random Random { get; set; }
+        public int InhibitionRadius { get; set; }
 
         /// <summary>
         /// Set default value for parameters of <see cref="HtmConfig"/>
