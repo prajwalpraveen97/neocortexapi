@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-
-
 using NeoCortexApi;
 using NeoCortexApi.Encoders;
 using NeoCortexApi.Utility;
 using NeoCortexApi.Entities;
 using NeoCortexApi.Classifiers;
 using NeoCortexApi.Network;
-
 using HtmImageEncoder;
-
 using Daenet.ImageBinarizerLib.Entities;
 using Daenet.ImageBinarizerLib;
+
 
 namespace SimpleMultiSequenceLearning
 {
