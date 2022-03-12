@@ -223,7 +223,8 @@ we encode data using a scalar encoder for converting alphabet numeric values.
 Input: FAKALKALLKALKAL, inactive - exp_8 
 Learning: (F_inactive - exp_8)-(A_inactive - exp_8)...-(K_inactive - exp_8)
 Prediction: F-> A,... A-> K,...             
-<img width="442" alt="image" src="https://user-images.githubusercontent.com/87648767/158037859-8a66c187-f00b-44bb-91db-5c8a0290cc99.png">
+
+    <img width="442" alt="image" src="https://user-images.githubusercontent.com/87648767/158037859-8a66c187-f00b-44bb-91db-5c8a0290cc99.png">
 
     
 ## Similar Studies/Research used as References
