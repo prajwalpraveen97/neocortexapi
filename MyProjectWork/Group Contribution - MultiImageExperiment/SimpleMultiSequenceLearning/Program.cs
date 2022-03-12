@@ -4,11 +4,16 @@ using NeoCortexApi.Entities;
 using NeoCortexApi.Network;
 using NeoCortexApi.Encoders;
 using NeoCortexApi.Utility;
+
 using HtmImageEncoder;
+
 using Daenet.ImageBinarizerLib.Entities;
 using Daenet.ImageBinarizerLib;
+
 using Newtonsoft.Json;
+
 using SkiaSharp;
+
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -25,7 +30,7 @@ namespace SimpleMultiSequenceLearning
     class Program
     {
         /// <summary>
-        /// TRAINING FILE PATH
+        /// Training File Paths For Images and Sequences
         /// </summary>
         /// 
         static readonly string SequenceDataFile = Path.GetFullPath(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\TrainingFiles\TrainingFile.csv");
@@ -44,6 +49,8 @@ namespace SimpleMultiSequenceLearning
         /// 
         static void Main(string[] args)
         {
+            // Set the Foreground color to blue
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("######## ########    ###    ##     ##    ##    ##  #######   #######  ########  #### ########  ######  ");
             Console.WriteLine("   ##    ##         ## ##   ###   ###    ###   ## ##     ## ##     ## ##     ##  ##  ##       ##    ## ");
             Console.WriteLine("   ##    ##        ##   ##  #### ####    ####  ## ##     ## ##     ## ##     ##  ##  ##       ##       ");
@@ -52,9 +59,10 @@ namespace SimpleMultiSequenceLearning
             Console.WriteLine("   ##    ##       ##     ## ##     ##    ##   ### ##     ## ##     ## ##     ##  ##  ##       ##    ## ");
             Console.WriteLine("   ##    ######## ##     ## ##     ##    ##    ##  #######   #######  ########  #### ########  ######  ");
 
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
+            Console.WriteLine("\n\n\n");
+
+            // Set the Foreground color to blue
+            Console.ForegroundColor = ConsoleColor.DarkRed;
 
             Console.WriteLine("             :::::::::::::::::::...:~!777!!~^:....:::::::::::::");
             Console.WriteLine("             :::::::::::::::::..^?G##########BPJ~:..:::::::::::");
@@ -83,9 +91,10 @@ namespace SimpleMultiSequenceLearning
             Console.WriteLine("             :::::::::::::::~!?JJYJJ?7~:::.^!!!!!!!~:.:::::::::");
 
 
-            Console.WriteLine("\n\n");
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n\n\n\n");
 
+            // Set the Foreground color to blue
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine("*********************************************************************************************");
             Console.WriteLine("***********************************   MACHINE LEARNING     **********************************");
             Console.WriteLine("***********************************   NEO - CORTEX API     **********************************");
@@ -94,141 +103,115 @@ namespace SimpleMultiSequenceLearning
             Console.WriteLine("*********************************************************************************************");
             Console.WriteLine("*********************************************************************************************");
 
-            Console.WriteLine("\n\n");
-            Console.WriteLine("\n\n");
-            Console.WriteLine("Variables are being trained Please Wait....");
+            Console.WriteLine("\n\n\n\n");
 
-            Console.WriteLine("Training Model In Progress.....");
-            // RunMultiSimpleSequenceLearningExperiment();
+            Console.WriteLine("**************             Multi Sequence Learning               ************** ");
+            Console.WriteLine("**************  Option - 1 Multi Sequence Learning - Numbers     ************** ");
+            Console.WriteLine("**************  Option - 2 Multi Sequence Learning - Alphabets   ************** ");
+            Console.WriteLine("**************  Option - 3 Multi Sequence Learning - Image       ************** ");
 
-            // RunMultiSequenceLearningExperiment(SequenceDataFile);
+            Console.WriteLine("\n");
+            Console.WriteLine("Please Enter An Option to Continue with MultiSequence Experiment");
 
-            MyHelperMethod MultiSequenceForImage = new MyHelperMethod();
-            int imageheight = 30;
-            int imagewidth = 30;
-            MultiSequenceForImage.BinarizeImageTraining(InputPicPath, OutputPicPath, imageheight, imagewidth);
+            // Set the Foreground color to blue
+            Console.ForegroundColor = ConsoleColor.White;
+
+            int Option = Convert.ToInt16(Console.ReadLine());
+
+            if (Option == 1)
+            {
+                Console.WriteLine("User Selected MultiSequence Experiment - Numbers\n");
+                MultiSequenceLearning_Numbers();
+            }
+            if (Option == 2)
+            {
+                Console.WriteLine("User Selected MultiSequence Experiment - Alphabets\n");
+                MultiSequenceLearning_Alphabets(SequenceDataFile);
+            }
+            if (Option == 3)
+            {
+                Console.WriteLine("User Selected MultiSequence Experiment - Image");
+
+                MyHelperMethod MultiSequenceForImage = new MyHelperMethod();
+                int imageheight = 100;
+                int imagewidth = 100;
+
+                var trainingData2 = MyHelperMethod.ReadImageDataSetsFromFolder(InputPicPath);
+                MultiSequenceForImage.BinarizeImageTraining(InputPicPath, OutputPicPath, imageheight, imagewidth);
+            }
         }
 
-        private static void RunMultiSequenceLearningExperiment(string datafilepath)
+        /// <summary>
+        /// Runs MultiSequence Learning Experiment - To Carry out Sequence Learning for Numbers.
+        /// </summary>
+        private static void MultiSequenceLearning_Numbers()
         {
             Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
 
-            //sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 5.0, 4.0, 3.0, 7.0, 1.0, 9.0, 12.0, 11.0, 12.0, 13.0, 14.0, 11.0, 12.0, 14.0, 5.0, 7.0, 6.0, 9.0, 3.0, 4.0, 3.0, 4.0, 3.0, 4.0 }));
-            //sequences.Add("S2", new List<double>(new double[] { 0.8, 2.0, 0.0, 3.0, 3.0, 4.0, 5.0, 6.0, 5.0, 7.0, 2.0, 7.0, 1.0, 9.0, 11.0, 11.0, 10.0, 13.0, 14.0, 11.0, 7.0, 6.0, 5.0, 7.0, 6.0, 5.0, 3.0, 2.0, 3.0, 4.0, 3.0, 4.0 }));
-
-            //sequences.Add("S1", new List<double>(new double[] { 2.0, 4.0, 6.0, 8.0,  10.0, 12.0}));
-            //sequences.Add("S2", new List<double>(new double[] { 3.0, 6.0, 9.0, 12.0, 15.0, 18.0}));
-
-            //sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 3.0, 5.0, 7.0 }));
-            //sequences.Add("S2", new List<double>(new double[] { 2.0, 4.0, 6.0, 8.0, 10.00 }));
-
-            // List of Prime Numbers from 0 to 100
-            //sequences.Add("S1", new List<double>(new double[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}));
-
-            //sequences.Add("S3", new List<double>(new double[] { 4, 6, 8, 9, 10, 12, 14, 15, 16 }));
-            //sequences.Add("S2", new List<double>(new double[] { 41, 43, 47,  53, 59, 61, 67, 71,73, 79, 83, 89, 97 }));
-
-
-            // List of Composite Numbers from 1 to 100          { F, A, K, L , M, 12, 14, 15,16 }));
-            //sequences.Add("S3", new List<double>(new double[] { 4, 6, 8, 9, 10, 12, 14, 15,16 }));
-            //sequences.Add("S4", new List<double>(new double[] {18, 20, 21, 22, 24, 25,26, 27, 28 }));
-            //sequences.Add("S5", new List<double>(new double[] {30, 32, 33, 34, 35, 36, 38, 39, 40 }));
-            //sequences.Add("S6", new List<double>(new double[] {42, 44, 45, 46, 48, 49, 50, 51, 52 }));
-            // sequences.Add("S7", new List<double>(new double[] {54, 55, 56, 57, 58, 60, 62, 63, 64 }));
-            // sequences.Add("S8", new List<double>(new double[] {65, 66, 68, 69, 70, 72, 74, 75, 76 }));
-            // sequences.Add("S9", new List<double>(new double[] {77, 78, 80, 81, 82, 84, 85, 86, 87 }));
-            // sequences.Add("S10", new List<double>(new double[] {88, 90, 91, 92, 93, 94, 95, 96, 98, 99, 100 }));
-
             sequences.Add("TwoMultiple", new List<double>(new double[] { 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0 }));
-
             sequences.Add("ThreeMultiple", new List<double>(new double[] { 3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0 }));
-
             sequences.Add("FiveMultiple", new List<double>(new double[] { 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0 }));
-
             sequences.Add("SevenMultiple", new List<double>(new double[] { 7.0, 14.0, 21.0, 28.0, 35.0, 42.0, 49.0 }));
-
             sequences.Add("ElevenMultiple", new List<double>(new double[] { 11.0, 22.0, 33.0, 44.0 }));
 
-
-            //Dictionary<string, List<string>> GauravSequence = new Dictionary<string, List<string>>();
-
-            //GauravSequence.Add("Sequence1", new List<string>(new string[] { "123456789"}));
-
-            var trainingData = MyHelperMethod.ReadSequencesDataFromCSV(datafilepath);
-            var trainingDataProcessed = MyHelperMethod.TrainEncodeSequencesFromCSV(trainingData);
-
-
-            //
-            // Prototype for building the prediction engine.
             MultiSequenceLearning experiment = new MultiSequenceLearning();
 
+            Console.WriteLine("Variables are being trained Please Wait....");
 
-            var trained_HTM_model = experiment.RunAlphabetsLearning(trainingDataProcessed, true);
-
-
-            var trained_CortexLayer = trained_HTM_model.Keys.ElementAt(0);
-            var trained_Classifier = trained_HTM_model.Values.ElementAt(0);
-
-
-            //var predictor = experiment.Run(sequences);
+            var predictor = experiment.Run(sequences);
 
             Console.WriteLine("Ready to Predict.....");
 
-            /*var list1 = new double[] { 1.0, 2.0, 3.0 };
-            var list2 = new double[] { 2.0, 3.0, 4.0 };
-            var list3 = new double[] { 8.0, 1.0, 2.0 };
-            var list4 = new double[] { 5.0, 1.0, 7.0 };
-*/
-            // replace with alphabets 
-            // own encoder for letter
-            // change letter to scalar encoder
-            // note : can use ascii value
-
-            // var list2 = new double[] { 2.0, 3.0, 5.0, 11.0 };
-            //var list2 = new double[] { 4.0, 6.0, 9.0, 15.0, 21.0, 7.0 , 30.0};
-
             int BufferSize;
+            Console.WriteLine("Enter Total number of sequences you want to give..");
+            BufferSize = Convert.ToInt32(Console.ReadLine());
 
-            /*            Console.WriteLine("Enter Total number of sequences you want to give..");
+            Console.WriteLine($"Array Size is : {BufferSize}");
+            Console.WriteLine("Enter Sequence of Numbers to be Predicted....");
 
-                        BufferSize = Convert.ToInt32(Console.ReadLine());
+            double[] buffer = new double[BufferSize];
 
-                        Console.WriteLine($"Array Size is : {BufferSize}");
+            for (int i = 0; i < BufferSize; i++)
+            {
+                buffer[i] = Convert.ToDouble(Console.ReadLine());
+            }
 
-                        Console.WriteLine("Enter Sequence of Numbers to be Predicted....");
-
-                        double[] buffer = new double[BufferSize];
-
-                        for (int i = 0; i < BufferSize; i++)
-                        {
-                            buffer[i] = Convert.ToDouble(Console.ReadLine());
-                        }
-
-                        Console.WriteLine($"Entered Number are : ");
-                        for (int i = 0; i < BufferSize; i++)
-                        {
-                            Console.Write("{0}", buffer[i]);
-                            Console.Write("\t");
-                        }*/
-
+            Console.WriteLine($"Entered Number are : ");
+            for (int i = 0; i < BufferSize; i++)
+            {
+                Console.Write("{0}", buffer[i]);
+                Console.Write("\t");
+            }
             Console.WriteLine("\n");
-            /*predictor.Reset();
-            PredictNextElement(predictor, buffer);*/
 
-            /* PredictNextElement(predictor, list4);
-
-               predictor.Reset();
-               PredictNextElement(predictor, list1);
-
-               predictor.Reset();
-               PredictNextElement(predictor, list2);
-
-               predictor.Reset();
-               PredictNextElement(predictor, list3);
-               */
+            predictor.Reset();
+            PredictNextElement(predictor, buffer);
+        }
 
 
-            Console.WriteLine("ENTER CANCER SEQUENCE:            *note format->AAAAVVV {AlphabeticSequence}");
+        /// <summary>
+        /// Runs MultiSequence Learning Experiment - To Carry out Sequence Learning for Alphabets.
+        /// </summary>
+        /// <param name="datafilepath"></param>
+        private static void MultiSequenceLearning_Alphabets(string datafilepath)
+        {
+            var trainingData = MyHelperMethod.ReadSequencesDataFromCSV(datafilepath);
+            var trainingDataProcessed = MyHelperMethod.TrainEncodeSequencesFromCSV(trainingData);
+
+            /// <summary>
+            /// Prototype for building the prediction engine.
+            ///  </summary>
+            MultiSequenceLearning experiment = new MultiSequenceLearning();
+
+            Console.WriteLine("Variables are being trained Please Wait....");
+
+            var trained_HTM_model = experiment.RunAlphabetsLearning(trainingDataProcessed, true);
+            var trained_CortexLayer = trained_HTM_model.Keys.ElementAt(0);
+            var trained_Classifier = trained_HTM_model.Values.ElementAt(0);
+
+            Console.WriteLine("Ready to Predict.....");
+
+            Console.WriteLine("Enter Cancer Sequence:   *note format->AAAAVVV {AlphabeticSequence}");
             var userInput = Console.ReadLine();
             while (!userInput.Equals("q") && userInput != "Q")
             {
@@ -270,52 +253,38 @@ namespace SimpleMultiSequenceLearning
                         }
 
                     }
-
                 }
 
                 var Classcounts = possibleClasses.GroupBy(x => x.Split("_")[0])
                .Select(g => new { possibleClass = g.Key, Count = g.Count() })
                .ToList();
-                var possibleClass = "";
                 foreach (var class_ in Classcounts)
                 {
                     Console.WriteLine($"Predicted Class : {class_.possibleClass.Split("_")[0]} \t votes: {class_.Count}");
                 }
-
-
-                Console.WriteLine("ENTER NEXT SEQUENCE :");
+                Console.WriteLine("Enter Next Sequence :");
                 userInput = Console.ReadLine();
-
             }
         }
 
+        /// <summary>
+        /// After Number Sequence is Learnt, PredictNextElement will carry out prediction of the elements from the
+        /// Sequence which is input from the user 
+        /// </summary>
+        /// <param name="list"></param>
         private static void PredictNextElement(HtmPredictionEngine predictor, double[] list)
         {
             Console.WriteLine("-------------------Start of PredictNextElement Function------------------------");
 
             foreach (var item in list)
             {
-                // {1.0,2.0,3.0}
                 var res = predictor.Predict(item);
                 if (res.Count > 0)
                 {
                     foreach (var pred in res)
                     {
-                        //Console.WriteLine($"PredictedInput = {pred.PredictedInput}");
-                        //Console.WriteLine($"Similarity     = {pred.Similarity}");
-
                         Debug.WriteLine($"PredictedInput = {pred.PredictedInput} <---> Similarity = {pred.Similarity}\n");
                     }
-                    //Token   -->  tokens[0] S1
-                    //             tokens[1] 3-4-2-5-0-1-2
-
-                    // Tokens2 --> tokens2[0] = S1_3
-                    //             tokens2[1] = 4    <-- Everytime this array element is checked
-                    //             tokens2[2] = 2
-                    //             tokens2[3] = 5
-                    //             tokens2[4] = 0
-                    //             tokens2[5] = 1
-                    //             tokens2[6] = 2
                     var tokens = res.First().PredictedInput.Split('_');
                     var tokens2 = res.First().PredictedInput.Split('-');
                     Console.WriteLine($"Predicted Sequence: {tokens[0]}, predicted next element {tokens2[tokens.Length - 1]}\n");
@@ -323,7 +292,6 @@ namespace SimpleMultiSequenceLearning
                 else
                     Console.WriteLine("Invalid Match..... \n");
             }
-
             Console.WriteLine("------------------------End of PredictNextElement ------------------------");
         }
     }
