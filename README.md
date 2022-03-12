@@ -27,10 +27,11 @@ This project references
                         
 
 The learning process includes: 
-    1. reading sequences.
-    2. encoding the data using encoders.
-    3. Spatial Pooler Learning with Homeostatic Plasticity Controller until reaching a stable state.
-    4. Learning with Spatial pooler and Temporal memory, conditional exit.
+    
+1. reading sequences.
+2. encoding the data using encoders.
+3. Spatial Pooler Learning with Homeostatic Plasticity Controller until reaching a stable state.
+4. Learning with Spatial pooler and Temporal memory, conditional exit.
 5. Interactive testing section, output classification/prediction from input data.
 6. Implementing Multi-Image Sequence Learning Using Image Encoder.
 
