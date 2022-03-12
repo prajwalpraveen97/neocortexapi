@@ -21,7 +21,7 @@ This project references
 <ul>
     <li>Sequence Learning sample, see [SequenceLearning.cs](https://github.com/ddobric/neocortexapi/tree/master/source/Samples/NeoCortexApiSample). </li>
     <li>Video Learning sample, see [VideoLearning.cs] (https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/HTMVideoLearning/VideoLearning.cs)</li>
-    <li>HTM Image Encoder sample, see [VideoLearning.cs]
+    <li>HTM Image Encoder sample, see [ImageEncoder.cs]
 (https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/ImageEncoder/ImageEncoder.cs)</li>
 </ul>
                         
