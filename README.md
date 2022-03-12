@@ -1,18 +1,18 @@
-# Thesis: Using HTM to learn time series data as LSTM and comparison of performance.
+# 25. Multi-Sequence/Image Learning Project (WS21/22) Project - Team Noobies
 
-## Supervision
-Prof. Damir Dobric
-
-Referees: Prof. Dr. Pech, Prof. Dr. Nauth
-
-Student: Yash Vyas – 1266490, vyas@stud.fra-uas.de
+Students: 
+1.	Harish Palanivel, 1392283 (harish.palanivel@stud.fra-uas.de)
+2.	Gaurav Honnavara Manjunath, 1384178 (gaurav.honnavaramanjunath@stud.fra-uas.de)
+3.	Athkar Praveen Prajwal, 1394663 (praveen.athkar@stud.fra-uas.de)
 
 ## 1. Motivation:
 
-In the following experiment we introduce different types of sequence into the HTM and LSTM and then compare performance.
+In the following experiment, we introduce different types of sequences into the HTM and Use HTM Image Encoder for Image Sequence Learning.
 
-    Experiment 1 - Taxi Passenger Count Prediction.
-    Experimtnt 2 - Anti Cancer Peptides Sequence Classification
+    Experiment 1 – Sequence Learning with Numbers.
+    Experiment 2 - Sequence Learning with Alphabets.
+    Experiment 3 - Anti Cancer Peptides Sequence Classification.
+    Experiment 4 – Implementing Multi-Image Sequence Learning Using HTM Image Encoder.
 
 ## 2. Overview:
 
@@ -21,36 +21,41 @@ This project references
 <ul>
     <li>Sequence Learning sample, see [SequenceLearning.cs](https://github.com/ddobric/neocortexapi/tree/master/source/Samples/NeoCortexApiSample). </li>
     <li>Video Learning sample, see [VideoLearning.cs] (https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/HTMVideoLearning/VideoLearning.cs)</li>
+    <li>https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/ImageEncoder/ImageEncoder.cs</li>
 </ul>
                         
 
-    Learning process include: 
+The learning process includes: 
     1. reading sequences.
     2. encoding the data using encoders.
-    3. Spatial Pooler Learning with Homeostatic Plasticity Controller until reaching stable state.
+    3. Spatial Pooler Learning with Homeostatic Plasticity Controller until reaching a stable state.
     4. Learning with Spatial pooler and Temporal memory, conditional exit.
-    5. Interactive testing section, output classification/prediction from input data.
+5. Interactive testing section, output classification/prediction from input data.
+6. Implementing Multi-Image Sequence Learning Using Image Encoder.
 
 ## 3. Data Format:
+Experiment 1 - Sequence Learning with Numbers
+       DataFormat - [Number Sequence] -> [Sequence Class]
+       Sequences - Multi Sequence - Here Alphabetic Sequence is considered a sequence of characters.
+       Example Datarow - 0.0, 1.0, 0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 5.0, 4.0, 3.0, 7.0, 1.0, 9.0, 12.0, 11.0, 12.0, 13.0, 14.0, 11.0, 12.0, 14.0, 5.0, 7.0, 6.0, 9.0, 3.0, 4.0, 3.0, 4.0, 3.0, 4.0
 
-Experiment 1 - Taxi Passenger Count Prediction
-
-       DataFormat - [DateTime] -> [PassengerCount]
-       Example datarow - 01-01-2021 00:00:00,19276
-       Sequences - Single Sequence. [Here dates are taken in ascending order as sequence]
-       Explaination: 01-01-2021,02-01-2020,...,31-01-2020,01-02-2020,.....ENDING-DATE.
-                     EachDate is a element in the sequence.
-       
-Experiment 2 - Anti Cancer Peptides Sequence Classification
-
+Experiment 2 - Sequence Learning with Alphabets
        DataFormat - [Alphabetic Sequence] -> [Sequence Class]
-       Sequences  - Multi Sequence - Here Alphabetic Sequence is considered sequnce of characters.
-       Example datarow - AAWKWAWAKKWAKAKKWAKAA,mod. active
+       Sequences  - Multi Sequence - Here Alphabetic Sequence is considered sequence of characters.
+       Example Datarow - AIADISAASIFIIISIFF
 
+Experiment 3 - Anti Cancer Peptides Sequence Classification
+       DataFormat - [Alphabetic Sequence] -> [Sequence Class]
+       Sequences  - Multi Sequence - Here Alphabetic Sequence is considered sequence of characters.
+       Example Datarow - FAKALKALLKALKAL, inactive - exp_8
+
+Experiment 4 – Implementing Multi-Image Sequence Learning Using HTMImageEncoder.
+<Work In Progress>
 ## 4. Learning Process:
 <ul>
-    <li>For both the experiment same configuration has been used.</li>
-    <li>Current HTM Configuration:</li>
+    <li>For all the experiments same configuration has been used.</li>
+    <li>For Experiment 4, We have used HTM Image Encoder and Optimized the code accordingly.</li>
+    <li>Current HTM Configuration For Sequence Learning:</li>
 </ul>
 
 
@@ -169,88 +174,21 @@ foreach (var sequence in Sequences)  // SEQUENCE LOOP
 
     In the following section experiments performed are explained in detail with training and testing phase results.
 
-### Taxi Passenger Count Prediction Experiment:
-
-#### Data Preparation
-<ul>
-<li>Monthly dataset are available at https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page. </li>
-<li>We have used six month dataset i.e Jan 2021 - June 2021. </li>
-<li>PassengerCount is aggregated for each day.</li>
-<li>We are fetching data from TrainingFile Directory using. </li>
-</ul>
-
-```csharp
-public static List<Dictionary<string, List<string>>> ReadPassengerDataFromFile(string dataFilePath)
-```
-see,[HelperMethods.cs](https://github.com/UniversityOfAppliedSciencesFrankfurt/thesis-LSTM0-vs-HTM-Yash-Vyas/blob/main/ThesisExperiments/ThesisExperiments/HelperMethods.cs).          
-
-#### DataEncoding
-For encoding month-date-year, we have used scalar encoders with following configurations.
-
-##### DateEncoder
-```csharp
- ScalarEncoder DayEncoder = new ScalarEncoder(new Dictionary<string, object>()
-            {
-                { "W", 3},
-                { "N", 35},
-                { "MinVal", (double)1}, // Min value = (0).
-                { "MaxVal", (double)32}, // Max value = (7).
-                { "Periodic", true},
-                { "Name", "Date"},
-                { "ClipInput", true},
-            });
-```
-##### MonthEncoder
-```csharp
- ScalarEncoder MonthEncoder2 = new ScalarEncoder(new Dictionary<string, object>()
-            {
-                { "W", 3},
-                { "N", 15},
-                { "MinVal", (double)1}, // Min value = (0).
-                { "MaxVal", (double)12}, // Max value = (7).
-                { "Periodic", true}, // Since Monday would repeat again.
-                { "Name", "Month"},
-                { "ClipInput", true},
-            });
-```
-##### YearEncoder
-```csharp
-ScalarEncoder YearEncoder3 = new ScalarEncoder(new Dictionary<string, object>()
-            {
-                { "W", 3},
-                { "N", 11},
-                { "MinVal", (double)2018}, // Min value = (0).
-                { "MaxVal", (double)2022}, // Max value = (7).
-                { "Periodic", true}, // Since Monday would repeat again.
-                { "Name", "Year"},
-                { "ClipInput", true},
-            });
-```
-
-#### Example of data encoding:
-        
-<ul>
-<li>Raw Data Row : 01-01-2021 00:00:00 [DD-MM-YYYY]</li>
-<li>Encoded Data Row : 11000000000000000000000000000000001-110000000000001-00000001110</li>
-</ul>
-
-#### Tesing Modes:
-![Testing Mode After Learning](https://github.com/UniversityOfAppliedSciencesFrankfurt/thesis-LSTM0-vs-HTM-Yash-Vyas/blob/main/ThesisExperiments/ThesisExperiments/OutPutSnaps/PassengerCount_trained_testingModes.png)  
-### 2. Anti Cancer Peptide Sequence Classification:
-#### Data Preparation and Processing
+### 1. Anti-Cancer Peptide Sequence Classification:
+#### Data Preparation and Processing:
 <ul>
 <li>Dataset are available at https://archive.ics.uci.edu/ml/datasets/Anticancer+peptides. </li>
-<li>We are fetching data from TrainingFile Directory using.</li>
-<li> We are using elementwise prediction and later applying majority votes value as classification/label value.</li>
+<li>We are fetching data from Training File Directory using. </li>
+<li> We are using elementwise prediction and later applying majority votes value as classification/label value. </li>
 </ul>
 
 ```csharp
 public static List<Dictionary<string, List<string>>> ReadCancerSequencesDataFromFile(string dataFilePath)
 ```
-see,[HelperMethods.cs](https://github.com/UniversityOfAppliedSciencesFrankfurt/thesis-LSTM0-vs-HTM-Yash-Vyas/blob/main/ThesisExperiments/ThesisExperiments/HelperMethods.cs).         
+see,[HelperMethods.cs](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/MyProjectWork/SequenceLearningExperiments/SequenceLearningExperiments/HelperMethods.cs).
 
 #### DataEncoding
-we encode data using scalar encoder for converting alphabet numeric value. 
+we encode data using a scalar encoder for converting alphabet numeric values. 
 
 #### AlphabetEncoder
 ```csharp
@@ -278,33 +216,24 @@ we encode data using scalar encoder for converting alphabet numeric value.
 <li>....</li>
 </ul>
 
-#### Tesing Modes:
+#### Testing Modes:
 
-#### Version 1 :
-Explaination:
-Input : FKVKFKVKVK, inactive - exp_44 
-Learning : (F_inactive - exp_44)-(K_inactive - exp_44 )...-(K_inactive - exp_44)
-Prediction : F-> k,...
-             k-> v,...             
-![Testing Mode After Learning](https://github.com/UniversityOfAppliedSciencesFrankfurt/thesis-LSTM0-vs-HTM-Yash-Vyas/blob/main/ThesisExperiments/ThesisExperiments/OutPutSnaps/CancerSequenceTrainingModes.png)  
-
-#### Version 2 :
-Explaination:
-Input : FKVKFKVKVK, inactive - exp_44
-Learning: (FKVKFKVKVK_inactive - exp_44)
-Note: We are using the whole sequence as a single element
-![Testing Mode After Learning](https://github.com/UniversityOfAppliedSciencesFrankfurt/thesis-LSTM0-vs-HTM-Yash-Vyas/blob/main/ThesisExperiments/ThesisExperiments/OutPutSnaps/CancerSequenceClassification_V2_tesingMode.png)  
-
+#### Explanation:
+(To Be Modified as per our Input)
+Input: FKVKFKVKVK, inactive - exp_44 
+Learning: (F_inactive - exp_44)-(K_inactive - exp_44 )...-(K_inactive - exp_44)
+Prediction: F-> k,... k-> v,...             
+<Output Image To Be Uploaded >
 
 
 ## Similar Studies/Research used as References
 [1] Continuous online sequence learning with an unsupervised neural network model.
 Author: Yuwei Cui, Subutai Ahmad, Jeff Hawkins| Numenta Inc.
 
-[2] On the performance of HTM predicions of Medical Streams in real time.
+[2] On the performance of HTM predictions of Medical Streams in real-time.
 Author: Noha O. El-Ganainy, Ilangkp Balasingham, Per Steinar Halvorsen, Leiv Arne Rosseland.
 
-[3] Sequence memory for prediction, inference and behaviour
+[3] Sequence memory for prediction, inference, and behaviour
 Author: Jeff Hawkins, Dileep George, Jamie Niemasik | Numenta Inc.
 
 [4] An integrated hierarchical temporal memory network for real-time continuous multi interval 
@@ -314,7 +243,3 @@ Author: Jianhua Diao, Hyunsyug Kang.
 [5] Stock Price Prediction Based on Morphological Similarity Clustering and Hierarchical Temporal 
 Memory
 Author: XINGQI WANG, KAI YANG, TAILIAN LIU
-
-Similar Thesis used as References:
-[6] Real-time Traffic Flow Prediction using Augmented Reality
-Author: Minxuan Zhang
