@@ -4,16 +4,11 @@ using NeoCortexApi.Entities;
 using NeoCortexApi.Network;
 using NeoCortexApi.Encoders;
 using NeoCortexApi.Utility;
-
 using HtmImageEncoder;
-
 using Daenet.ImageBinarizerLib.Entities;
 using Daenet.ImageBinarizerLib;
-
 using Newtonsoft.Json;
-
 using SkiaSharp;
-
 using System;
 using System.IO;
 using System.Collections.Generic;
