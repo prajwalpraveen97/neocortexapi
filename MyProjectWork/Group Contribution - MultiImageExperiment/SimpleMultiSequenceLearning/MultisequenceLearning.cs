@@ -76,7 +76,7 @@ namespace SimpleMultiSequenceLearning
         }
 
         /// <summary>
-        ///
+        ///  HTM Prediction
         /// </summary>
         private HtmPredictionEngine RunExperiment(int inputBits, HtmConfig cfg, EncoderBase encoder, Dictionary<string, List<double>> sequences)
         {
@@ -183,7 +183,7 @@ namespace SimpleMultiSequenceLearning
 
                 previousInputs.Add("-1.0");
 
-                //
+                
                 // Now training with SP+TM. SP is pretrained on the given input pattern set.
                 for (int i = 0; i < maxCycles; i++)
                 {
@@ -276,7 +276,7 @@ namespace SimpleMultiSequenceLearning
                         maxMatchCnt++;
                         Debug.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
 
-                        //
+                        
                         // Experiment is completed if we are 30 cycles long at the 100% accuracy.
                         if (maxMatchCnt >= 30)
                         {
