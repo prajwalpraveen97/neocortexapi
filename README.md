@@ -21,15 +21,17 @@ This project references
 <ul>
     <li>Sequence Learning sample, see [SequenceLearning.cs](https://github.com/ddobric/neocortexapi/tree/master/source/Samples/NeoCortexApiSample). </li>
     <li>Video Learning sample, see [VideoLearning.cs] (https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/HTMVideoLearning/VideoLearning.cs)</li>
-    <li>https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/ImageEncoder/ImageEncoder.cs</li>
+    <li>HTM Image Encoder sample, see [ImageEncoder.cs]
+(https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/ImageEncoder/ImageEncoder.cs)</li>
 </ul>
                         
 
 The learning process includes: 
-    1. reading sequences.
-    2. encoding the data using encoders.
-    3. Spatial Pooler Learning with Homeostatic Plasticity Controller until reaching a stable state.
-    4. Learning with Spatial pooler and Temporal memory, conditional exit.
+    
+1. reading sequences.
+2. encoding the data using encoders.
+3. Spatial Pooler Learning with Homeostatic Plasticity Controller until reaching a stable state.
+4. Learning with Spatial pooler and Temporal memory, conditional exit.
 5. Interactive testing section, output classification/prediction from input data.
 6. Implementing Multi-Image Sequence Learning Using Image Encoder.
 
@@ -219,13 +221,13 @@ we encode data using a scalar encoder for converting alphabet numeric values.
 #### Testing Modes:
 
 #### Explanation:
-(To Be Modified as per our Input)
-Input: FKVKFKVKVK, inactive - exp_44 
-Learning: (F_inactive - exp_44)-(K_inactive - exp_44 )...-(K_inactive - exp_44)
-Prediction: F-> k,... k-> v,...             
-<Output Image To Be Uploaded >
+Input: FAKALKALLKALKAL, inactive - exp_8 
+Learning: (F_inactive - exp_8)-(A_inactive - exp_8)...-(K_inactive - exp_8)
+Prediction: F-> A,... A-> K,...             
 
+<img width="442" alt="image" src="https://user-images.githubusercontent.com/87648767/158037859-8a66c187-f00b-44bb-91db-5c8a0290cc99.png">
 
+    
 ## Similar Studies/Research used as References
 [1] Continuous online sequence learning with an unsupervised neural network model.
 Author: Yuwei Cui, Subutai Ahmad, Jeff Hawkins| Numenta Inc.
