@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Linq;
-
-
 using NeoCortexApi;
 using NeoCortexApi.Classifiers;
 using NeoCortexApi.Encoders;
