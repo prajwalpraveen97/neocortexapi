@@ -136,9 +136,9 @@ namespace SimpleMultiSequenceLearning
 
             int maxCycles = 3500;
 
-            //
-            // Training SP to get stable. New-born stage.
-            //
+            /// <summary>
+            /// Training SP to get stable. New-born stage.
+            /// </summary>
 
             for (int i = 0; i < maxCycles && isInStableState == false; i++)
             {
@@ -234,7 +234,6 @@ namespace SimpleMultiSequenceLearning
                         Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
                         Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
 
-                        //
                         // If the list of predicted values from the previous step contains the currently presenting value,
                         // we have a match.
                         if (lastPredictedValues.Contains(key))
@@ -327,7 +326,8 @@ namespace SimpleMultiSequenceLearning
         /// <summary>
         /// Gets the number of all unique inputs.
         /// </summary>
-        /// <param name="sequences">Alle sequences.</param>
+
+        /// <param name="sequences">All Sequences.</param>
         /// <returns></returns>
         private int GetNumberOfInputs(Dictionary<string, List<double>> sequences)
         {
@@ -641,7 +641,7 @@ namespace SimpleMultiSequenceLearning
 
 
         /// <summary>
-        ///     RunImageLearning  In Progresss.......
+        /// RunImageLearning  Work In Progresss.......
         /// </summary>
         /// <param name="height">Height of the Image Data</param>
         /// <param name="width">Width of Image</param>

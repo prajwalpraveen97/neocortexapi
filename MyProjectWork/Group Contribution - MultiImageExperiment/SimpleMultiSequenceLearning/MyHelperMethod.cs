@@ -150,7 +150,7 @@ namespace SimpleMultiSequenceLearning
 
 
         /// <summary>
-        ///         FetchAlphabetEncoder 
+        /// FetchAlphabetEncoder 
         /// </summary>
         /// <returns> SCALAR ENCODERS</returns>
         public static ScalarEncoder FetchAlphabetEncoder()

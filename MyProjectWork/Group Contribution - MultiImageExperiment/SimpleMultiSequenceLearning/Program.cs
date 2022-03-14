@@ -44,7 +44,7 @@ namespace SimpleMultiSequenceLearning
         /// 
         static void Main(string[] args)
         {
-            // Set the Foreground color to blue
+            // Set the Foreground color to DarkYellow
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("######## ########    ###    ##     ##    ##    ##  #######   #######  ########  #### ########  ######  ");
             Console.WriteLine("   ##    ##         ## ##   ###   ###    ###   ## ##     ## ##     ## ##     ##  ##  ##       ##    ## ");
@@ -56,7 +56,7 @@ namespace SimpleMultiSequenceLearning
 
             Console.WriteLine("\n\n\n");
 
-            // Set the Foreground color to blue
+            // Set the Foreground color to DarkRed
             Console.ForegroundColor = ConsoleColor.DarkRed;
 
             Console.WriteLine("             :::::::::::::::::::...:~!777!!~^:....:::::::::::::");
@@ -88,7 +88,7 @@ namespace SimpleMultiSequenceLearning
 
             Console.WriteLine("\n\n\n\n");
 
-            // Set the Foreground color to blue
+            // Set the Foreground color to DarkBlue
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine("*********************************************************************************************");
             Console.WriteLine("***********************************   MACHINE LEARNING     **********************************");
@@ -108,7 +108,7 @@ namespace SimpleMultiSequenceLearning
             Console.WriteLine("\n");
             Console.WriteLine("Please Enter An Option to Continue with MultiSequence Experiment");
 
-            // Set the Foreground color to blue
+            // Set the Foreground color to White
             Console.ForegroundColor = ConsoleColor.White;
 
             int Option = Convert.ToInt16(Console.ReadLine());
