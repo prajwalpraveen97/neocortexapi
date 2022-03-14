@@ -640,7 +640,6 @@ namespace SimpleMultiSequenceLearning
         }
 
 
-
         /// <summary>
         ///     RunImageLearning  In Progresss.......
         /// </summary>
