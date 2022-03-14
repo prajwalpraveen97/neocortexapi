@@ -641,7 +641,7 @@ namespace SimpleMultiSequenceLearning
 
 
         /// <summary>
-        /// RunImageLearning  Work In Progresss.......
+        /// RunImageLearning Work In Progresss.......
         /// </summary>
         /// <param name="height">Height of the Image Data</param>
         /// <param name="width">Width of Image</param>
