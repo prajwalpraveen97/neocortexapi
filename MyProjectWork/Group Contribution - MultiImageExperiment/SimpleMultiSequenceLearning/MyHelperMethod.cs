@@ -78,7 +78,7 @@ namespace SimpleMultiSequenceLearning
         /// </summary>
         /// <param name="trainingData"></param>
         /// <returns></returns>
-        /// 
+
         public static List<Dictionary<string, int[]>> TrainEncodeSequencesFromCSV(List<Dictionary<string, string>> trainingData)
         {
             List<Dictionary<string, int[]>> ListOfEncodedTrainingSDR = new List<Dictionary<string, int[]>>();
@@ -114,7 +114,7 @@ namespace SimpleMultiSequenceLearning
         }
 
         /// <summary>
-        /// After Alpha Sequence is Learnt, PredictInputSequence will carry out prediction of the Alphabets from the
+        /// After Alphabets Sequence is Learnt, PredictInputSequence will carry out prediction of the Alphabets from the
         /// Sequence which is read from the sequence (CSV Folder) 
         /// </summary>
         /// <param name="list"></param>
@@ -283,7 +283,7 @@ namespace SimpleMultiSequenceLearning
 
 
         /// <summary>
-        ///   Fetch Data Sequence from the File WORK IN PROGRESS.......!
+        ///   Fetch Image Data Sequence from the File WORK IN PROGRESS.......!
         /// </summary>
         /// <param name="dataFilePath"></param>
         /// <returns></returns>
