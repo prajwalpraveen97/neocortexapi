@@ -267,11 +267,11 @@ Prediction: F-> A,... A-> K,...
 
 <img width="442" alt="image" src="https://user-images.githubusercontent.com/87648767/158037859-8a66c187-f00b-44bb-91db-5c8a0290cc99.png">
 
-## 5. Goals Achieved
+## 6. Goals Achieved
 * We have successfully Implemented and Experimented the Multi-Sequence Learning with Numbers, Alphabets, and with Cancer Peptides.csv file by using HTM.
 * We have implemented the HTMImage Encoder and binarized the input images into Binary images for the implementation of Multi-Image Learning Experiment.
 
-## 6. In-Progress
+## 7. In-Progress
 * We are working on Training the binarized images and on the prediction of the trained image data.
 * We are working on the documentation related to our project on regular basis.
     
