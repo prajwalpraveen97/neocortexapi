@@ -180,14 +180,54 @@ foreach (var sequence in Sequences)  // SEQUENCE LOOP
 #### Data Preparation and Processing:
 <ul>
 <li>Dataset are available at https://archive.ics.uci.edu/ml/datasets/Anticancer+peptides. </li>
-<li>We are fetching data from Training File Directory using. </li>
+<li>We are fetching data from Training File Directory using below code. </li>
 <li> We are using elementwise prediction and later applying majority votes value as classification/label value. </li>
 </ul>
 
 ```csharp
-public static List<Dictionary<string, List<string>>> ReadCancerSequencesDataFromFile(string dataFilePath)
+public static List<Dictionary<string, string>> ReadSequencesDataFromCSV(string dataFilePath)
+        {
+            List<Dictionary<string, string>> SequencesCollection = new List<Dictionary<string, string>>();
+
+            int keyForUniqueIndexes = 0;
+
+            if (File.Exists(dataFilePath))
+            {
+                using (StreamReader sr = new StreamReader(dataFilePath))
+                {
+                    while (sr.Peek() >= 0)
+                    {
+                        var line = sr.ReadLine();
+                        string[] values = line.Split(",");
+
+                        Dictionary<string, string> Sequence = new Dictionary<string, string>();
+
+                        string label = values[1];
+                        string sequenceString = values[0];
+
+                        foreach (var alphabet in sequenceString)
+                        {
+                            keyForUniqueIndexes++;
+                            if (Sequence.ContainsKey(alphabet.ToString()))
+                            {
+                                var newKey = alphabet.ToString() + "," + keyForUniqueIndexes;
+                                Sequence.Add(newKey, label);
+                            }
+                            else
+                            {
+                                Sequence.Add(alphabet.ToString(), label);
+                            }
+                        }
+
+                        SequencesCollection.Add(Sequence);
+                    }
+                }
+                return SequencesCollection;
+            }
+            return null;
+        }
 ```
-see,[HelperMethods.cs](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/MyProjectWork/SequenceLearningExperiments/SequenceLearningExperiments/HelperMethods.cs).
+see,[MyHelperMethods.cs](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/MyProjectWork/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/MyHelperMethod.cs).
 
 #### DataEncoding
 we encode data using a scalar encoder for converting alphabet numeric values. 
@@ -227,6 +267,13 @@ Prediction: F-> A,... A-> K,...
 
 <img width="442" alt="image" src="https://user-images.githubusercontent.com/87648767/158037859-8a66c187-f00b-44bb-91db-5c8a0290cc99.png">
 
+## 5. Goals Achieved
+* We have successfully Implemented and Experimented the Multi-Sequence Learning with Numbers, Alphabets, and with Cancer Peptides.csv file by using HTM.
+* We have implemented the HTMImage Encoder and binarized the input images into Binary images for the implementation of Multi-Image Learning Experiment.
+
+## 6. In-Progress
+* We are working on Training the binarized images and on the prediction of the trained image data.
+* We are working on the documentation related to our project on regular basis.
     
 ## Similar Studies/Research used as References
 [1] Continuous online sequence learning with an unsupervised neural network model.
