@@ -100,13 +100,13 @@ namespace SimpleMultiSequenceLearning
 
             Console.WriteLine("\n\n\n\n");
 
-            Console.WriteLine("**************             Multi Image/Sequence Learning               ************** ");
-            Console.WriteLine("**************        Option - 1 Multi Sequence Learning - Numbers     ************** ");
-            Console.WriteLine("**************        Option - 2 Multi Sequence Learning - Alphabets   ************** ");
-            Console.WriteLine("**************        Option - 3 Multi Sequence Learning - Image       ************** ");
+            Console.WriteLine("**************             Multi Image/Sequence Learning                      ************** ");
+            Console.WriteLine("**************        Option - 1 Multi Sequence Learning - Numbers            ************** ");
+            Console.WriteLine("**************        Option - 2 Multi Sequence Learning - Cancer Peptides    ************** ");
+            Console.WriteLine("**************        Option - 3 Multi Sequence Learning - Images             ************** ");
 
             Console.WriteLine("\n");
-            Console.WriteLine("Please Enter An Option to Continue with MultiSequence Experiment");
+            Console.WriteLine("Please Enter An Option to Continue with MultiSequence Experiment:");
 
             // Set the Foreground color to White
             Console.ForegroundColor = ConsoleColor.White;
