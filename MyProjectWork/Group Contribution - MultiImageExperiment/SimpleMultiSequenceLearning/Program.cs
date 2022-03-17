@@ -128,10 +128,12 @@ namespace SimpleMultiSequenceLearning
                 Console.WriteLine("User Selected MultiSequence Experiment - Image");
 
                 MyHelperMethod MultiSequenceForImage = new MyHelperMethod();
+                MultiSequenceLearning experiment = new MultiSequenceLearning();
                 int imageheight = 100;
                 int imagewidth = 100;
 
-                var trainingData2 = MyHelperMethod.ReadImageDataSetsFromFolder(InputPicPath);
+                var trainingImageData2 = MyHelperMethod.ReadImageDataSetsFromFolder(InputPicPath);
+                //var trained_HTM_modelImage = experiment.RunImageLearning(imageheight, imagewidth, trainingImageData2, true);
                 MultiSequenceForImage.BinarizeImageTraining(InputPicPath, OutputPicPath, imageheight, imagewidth);
             }
         }
