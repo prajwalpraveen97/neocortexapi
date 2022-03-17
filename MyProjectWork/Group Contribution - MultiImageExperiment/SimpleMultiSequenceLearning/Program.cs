@@ -135,6 +135,9 @@ namespace SimpleMultiSequenceLearning
                 var trainingImageData2 = MyHelperMethod.ReadImageDataSetsFromFolder(InputPicPath);
                 //var trained_HTM_modelImage = experiment.RunImageLearning(imageheight, imagewidth, trainingImageData2, true);
                 MultiSequenceForImage.BinarizeImageTraining(InputPicPath, OutputPicPath, imageheight, imagewidth);
+                var trained_HTM_model = experiment.RunImageLearning(imageheight, imagewidth, trainingImageData2, true);
+                var trained_CortexLayer = trained_HTM_model.Keys.ElementAt(0);
+                var trained_Classifier = trained_HTM_model.Values.ElementAt(0);
             }
         }
 
