@@ -106,7 +106,7 @@ namespace SimpleMultiSequenceLearning
                 case 1:
                     {
                         Console.WriteLine("User Selected MultiSequence Experiment - Numbers\n");
-                        MultiSeqLearn_Numbers multiSeqLearn_Numbers = new MultiSeqLearn_Numbers();
+                        HelperMethod_Numbers multiSeqLearn_Numbers = new HelperMethod_Numbers();
                         multiSeqLearn_Numbers.MultiSequenceLearning_Numbers();
                     }
                     break;
@@ -114,7 +114,7 @@ namespace SimpleMultiSequenceLearning
                 case 2:
                     {
                         Console.WriteLine("User Selected MultiSequence Experiment - Alphabets\n");
-                        MultiSeqLearn_Alphabets multiSeqLearn_Alphabets = new MultiSeqLearn_Alphabets();
+                        HelperMethod_Alphabets multiSeqLearn_Alphabets = new HelperMethod_Alphabets();
 
                         multiSeqLearn_Alphabets.MultiSequenceLearning_Alphabets(SequenceDataFile);
                     }
@@ -124,14 +124,12 @@ namespace SimpleMultiSequenceLearning
                     {
                         Console.WriteLine("User Selected MultiSequence Experiment - Image");
 
-                        MyHelperMethod MultiSequenceForImage = new MyHelperMethod();
-                        MultiSequenceLearning experiment = new MultiSequenceLearning();
-                        int imageheight = 100;
-                        int imagewidth = 100;
+                        HelperMethod_Images MultiSequenceForImage = new HelperMethod_Images();
 
-                        var trainingImageData2 = MyHelperMethod.ReadImageDataSetsFromFolder(InputPicPath);
-                        //var trained_HTM_modelImage = experiment.RunImageLearning(imageheight, imagewidth, trainingImageData2, true);
-                        MultiSequenceForImage.BinarizeImageTraining(InputPicPath, OutputPicPath, imageheight, imagewidth);
+                        int height = 40;
+                        int width = 40;
+
+                        MultiSequenceForImage.MultiSequenceLearning_Images(InputPicPath, OutputPicPath, height, width);
                     }
                     break;
 

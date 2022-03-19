@@ -21,6 +21,7 @@
     <Folder Include="BinarizedImage\Banana\" />
     <Folder Include="InputFolder\Avocado\" />
     <Folder Include="InputFolder\Banana\" />
+    <Folder Include="Testing Files\" />
     <Folder Include="TrainingFiles\" />
   </ItemGroup>
 

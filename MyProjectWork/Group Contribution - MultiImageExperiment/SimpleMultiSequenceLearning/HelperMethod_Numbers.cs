@@ -29,7 +29,7 @@ using static SimpleMultiSequenceLearning.MultiSequenceLearning;
 
 namespace SimpleMultiSequenceLearning
 {
-    public class MultiSeqLearn_Numbers
+    public class HelperMethod_Numbers
     {
         /// <summary>
         /// Runs MultiSequence Learning Experiment - To Carry out Sequence Learning for Numbers.

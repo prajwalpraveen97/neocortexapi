@@ -704,10 +704,7 @@ namespace SimpleMultiSequenceLearning
             SpatialPoolerMT sp = new SpatialPoolerMT(hpc);
             sp.Init(mem);
             tm.Init(mem);
-
-
-
-
+            
             // Please note that we do not add here TM in the layer.
             // This is omitted for practical reasons, because we first eneter the newborn-stage of the algorithm
             // In this stage we want that SP get boosted and see all elements before we start learning with TM.
@@ -737,17 +734,21 @@ namespace SimpleMultiSequenceLearning
 
                     foreach(var Imagesets in elementSDR)
                     {
-                        var set = Imagesets;
                         Console.WriteLine($"-------------- {observationClass} ---------------");
                         // CORTEX LAYER OUTPUT with elementSDR as INPUT and LEARN = TRUE
-                        var lyrOut = layer1.Compute(Imagesets, learn);
+                        //var lyrOut = layer1.Compute(Imagesets, learn);
 
-                        // IF STABLE STATE ACHIEVED BREAK LOOP - 3
-                       // if (isInStableState)
-                          //  break;
+                        var computeResult = layer1.Compute(Imagesets, true) as int[];
+                        var activeCellList = GetActiveCellsImages(computeResult);
+                        Console.WriteLine($"Active Cells computed from Image {observationClass}: {activeCellList}");
+
+
                     }
-
                 }
+
+               
+
+
             }
 
             // ADDING TEMPORAL MEMEORY to CORTEX LAYER
@@ -778,17 +779,17 @@ namespace SimpleMultiSequenceLearning
                     // ELEMENT IN SEQUENCE MATCHES COUNT
                     int ElementMatches = 0;
 
-                   // foreach (var Elements in sequence) // SEQUENCE DICTIONARY LOOP
-                    {
-                        // OBSERVATION LABEl
-                        var observationLabel = sequence.Key;
-                        // ELEMENT SDR LIST FOR A SINGLE SEQUENCE
-                        var ElementSdr = sequence.Value;
+                    // OBSERVATION LABEl
+                    var observationLabel = sequence.Key;
+                    // ELEMENT SDR LIST FOR A SINGLE SEQUENCE
+                    var ElementSdr = sequence.Value;
 
+                    foreach (var Elements in ElementSdr) // SEQUENCE DICTIONARY LOOP
+                    {
                         List<Cell> actCells = new List<Cell>();
                         var lyrOut = new ComputeCycle();
 
-                        lyrOut = layer1.Compute(ElementSdr, learn) as ComputeCycle;
+                        lyrOut = layer1.Compute(Elements, learn) as ComputeCycle;
                         Debug.WriteLine(string.Join(',', lyrOut.ActivColumnIndicies));
 
                         // Active Cells
@@ -917,6 +918,18 @@ namespace SimpleMultiSequenceLearning
             }
 
             return num;
+        }
+
+        /// <summary>
+        /// Convert int array to string for better representation
+        /// </summary>
+        /// <param name="computeResult"></param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private string GetActiveCellsImages(int[] computeResult)
+        {
+            string result = String.Join(",", computeResult);
+            return result;
         }
     }
 }
