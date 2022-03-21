@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPublishable>True</IsPublishable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\..\..\ImageEncoder\HtmImageEncoder.csproj" />
+	  <ProjectReference Include="..\..\..\NeoCortexApi\NeoCortexApi.csproj" />
+	  <ProjectReference Include="..\..\..\NeoCortexEntities\NeoCortexEntities.csproj" />
+	  <ProjectReference Include="..\..\..\NeoCortexUtils\NeoCortexUtils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BinarizedImage\Apple\" />
+    <Folder Include="BinarizedImage\Avocado\" />
+    <Folder Include="BinarizedImage\Banana\" />
+    <Folder Include="InputFolder\Avocado\" />
+    <Folder Include="InputFolder\Banana\" />
+    <Folder Include="Testing Files\" />
+    <Folder Include="TrainingFiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="InputFolder\Apple\pic1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TrainingFiles\TrainingFile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
