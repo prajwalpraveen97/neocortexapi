@@ -163,7 +163,7 @@ is being modified with the help of Image Encoder.
 ![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Avocado/Binarized_Avocado_1.jpg)
 ![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Banana/Binarized_Banana_1.jpg)
 ![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Apple/Binarized_Apple_3.jpg)
-![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Apple/Binarized_Banana_3.jpg)
+![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Banana/Binarized_Banana_3.jpg)
 ![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Avocado/Binarized_Avocado_3.jpg)
 
 
@@ -173,7 +173,7 @@ is being modified with the help of Image Encoder.
  3.Output Results
 -------------
 
-<Work Pending....>
+**Work Pending....**
 
 
  4.Goals Achieved
