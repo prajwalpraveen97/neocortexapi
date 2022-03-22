@@ -125,7 +125,7 @@ FKVKFKVKVK, inactive - exp_44
 ###### **[Alphabetic Sequence] -> [Sequence Class] Sequences - Multi Sequence**
 
 
-- **Multi Sequence Learning -Image Data Sets.**
+- **Multi Sequence Learning - Image Data Sets.**
 
 After we analysed MultiSequence Learning for Sequence of Alphabets, we moved further to Train and Predict Image DataSets.
 In This Approach, the Image Data Sets are stored in local folder with subfolders categories as labels.
@@ -142,7 +142,7 @@ is being modified with the help of Image Encoder.
 [BinarizeImageTraining](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Images.cs#L60-L108)
 
 
-Sample Image DataSet : 
+- **Sample Image DataSet.**
 
 ![image](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/InputFolder/Apple/Apple_1.jpg)
 ![image](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/InputFolder/Apple/Apple_2.jpg)
@@ -160,7 +160,7 @@ Sample Image DataSet :
 ![image](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/InputFolder/Banana/Banana_4.jpg)
 
 
-- **Multi Sequence Learning - Sample Binarized Output Images.**
+- **Sample Binarized Output Images.**
 
 
 ![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Apple/Binarized_Apple_1.jpg)
