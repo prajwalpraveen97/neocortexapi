@@ -12,7 +12,7 @@
 =============
 
 
-1. Objective
+1.Objective
 -------------
 
 To demonstrate learning of sequences such as set of Number sequences, Alphabets (Cancer Cells Sequences) and Image Data Sets (Apple, Avocado, Banana)
@@ -24,7 +24,7 @@ For Example :
 After Training Data Sets, if the user inputs an image such as apple or orange, it has to predict which fruit is identified.
 
 
-2. Approach and Learning
+2.Approach and Learning
 -------------
 
 In the following Approaches, we introduce different types of Encoders in HtmPredictionEngine such as ScalarEncoder, HTM Image Encoder  for Learning Sequence of Numbers,Learning of Sequence of Alphabets and Image Data Sets.
@@ -170,13 +170,13 @@ is being modified with the help of Image Encoder.
 ###### **[Image Data Sets] -> [Image Data Set Class] Sequences - Multi Sequence**
 
 
- 3. Output Results
+ 3.Output Results
 -------------
 
 <Work Pending....>
 
 
- 4. Goals Achieved
+ 4.Goals Achieved
 -------------
 
 1. Analyse and Improve Multi-Sequence Learning - Numbers
@@ -186,7 +186,7 @@ is being modified with the help of Image Encoder.
 5. Predict Image from the Trained Image data sets 
 
 
- 5. In-Progress
+ 5.In-Progress
 -------------
 
  Team is Working on :
@@ -196,7 +196,7 @@ is being modified with the help of Image Encoder.
 2. Documentation Work adding output results.
 
 
-6. References
+6.References
 -------------
 
 
