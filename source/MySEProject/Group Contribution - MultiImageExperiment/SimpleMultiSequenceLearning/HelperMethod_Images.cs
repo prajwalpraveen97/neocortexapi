@@ -62,8 +62,6 @@ namespace SimpleMultiSequenceLearning
             if (Directory.Exists(InputPath))
             {
                 var trainingImageData2 = HelperMethod_Images.ReadImageDataSetsFromFolder(InputPath);
-
-                string TestingImage = Path.GetFullPath(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\Testing Files\Apple_2.jpg");
                 
                 Multiseq_ImageLearning multiseq_Image = new Multiseq_ImageLearning();
                 var trained_HTM_modelImage = multiseq_Image.RunImage(trainingImageData2,height,width);
@@ -83,23 +81,38 @@ namespace SimpleMultiSequenceLearning
                     }
                 }
 
-                trained_HTM_modelImage.Reset();
-                var res = trained_HTM_modelImage.Predict(TestingImage);
+                Console.WriteLine("Input an Image Here.....(Drag and Drop image here) \n");
 
-                if (res.Count > 0)
+                string TestingImage = (Console.ReadLine().Trim('"'));
+
+
+                if (TestingImage != null)
                 {
-                    foreach (var pred in res)
+                    trained_HTM_modelImage.Reset();
+                    var res = trained_HTM_modelImage.Predict(TestingImage);
+
+                    if (res.Count > 0)
                     {
-                        Debug.WriteLine($"PredictedInput = {pred.PredictedInput} <---> Similarity = {pred.Similarity}\n");
+                        foreach (var pred in res)
+                        {
+                            Debug.WriteLine($"PredictedInput = {pred.PredictedInput} <---> Similarity = {pred.Similarity}\n");
+                        }
+                        var tokens = res.First().PredictedInput.Split('_');
+                        var tokens2 = res.First().PredictedInput.Split('-');
+                        Console.WriteLine($"Predicted Sequence: {tokens[0]}, predicted next element {tokens2[tokens.Length - 3]}\n");
                     }
-                    var tokens = res.First().PredictedInput.Split('_');
-                    var tokens2 = res.First().PredictedInput.Split('-');
-                    Console.WriteLine($"Predicted Sequence: {tokens[0]}, predicted next element {tokens2[tokens.Length - 3]}\n");
+                    else
+                    {
+                        Console.WriteLine("Invalid Match..... \n");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Match..... \n");
+                    Console.WriteLine();
+                    Console.WriteLine("Invalid Input \n");
                 }
+
+
             }
             else
             {

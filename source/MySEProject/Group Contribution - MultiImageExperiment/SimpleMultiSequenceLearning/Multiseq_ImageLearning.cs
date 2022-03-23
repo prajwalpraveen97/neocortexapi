@@ -93,7 +93,7 @@ namespace SimpleMultiSequenceLearning
 
             TemporalMemory tm = new TemporalMemory();
 
-            HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs, (isStable, numPatterns, actColAvg, seenInputs) =>
+            HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs*10, (isStable, numPatterns, actColAvg, seenInputs) =>
             {
                 if (isStable)
                     // Event should be fired when entering the stable state.
@@ -130,7 +130,7 @@ namespace SimpleMultiSequenceLearning
 
             var lastPredictedValues = new List<string>(new string[] { "0" });
 
-            int maxCycles = 50;
+            int maxCycles = 1000;
 
             //
             // Training SP to get stable. New-born stage.
