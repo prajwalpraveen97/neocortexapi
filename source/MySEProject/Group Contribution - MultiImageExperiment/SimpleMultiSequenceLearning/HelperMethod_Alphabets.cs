@@ -50,33 +50,35 @@ namespace SimpleMultiSequenceLearning
                     while (sr.Peek() >= 0)
                     {
                         var line = sr.ReadLine();
-                        string[] values = line.Split(",");
-
-                        Dictionary<string, string> Sequence = new Dictionary<string, string>();
-
-                        string label = values[1];
-                        string sequenceString = values[0];
-
-                        foreach (var alphabet in sequenceString)
+                        if (line != null)
                         {
-                            keyForUniqueIndexes++;
-                            if (Sequence.ContainsKey(alphabet.ToString()))
-                            {
-                                var newKey = alphabet.ToString() + "," + keyForUniqueIndexes;
-                                Sequence.Add(newKey, label);
-                            }
-                            else
-                            {
-                                Sequence.Add(alphabet.ToString(), label);
-                            }
-                        }
+                            string[] values = line.Split(",");
 
-                        SequencesCollection.Add(Sequence);
+                            Dictionary<string, string> Sequence = new Dictionary<string, string>();
+
+                            string label = values[1];
+                            string sequenceString = values[0];
+
+                            foreach (var alphabet in sequenceString)
+                            {
+                                keyForUniqueIndexes++;
+                                if (Sequence.ContainsKey(alphabet.ToString()))
+                                {
+                                    var newKey = alphabet.ToString() + "," + keyForUniqueIndexes;
+                                    Sequence.Add(newKey, label);
+                                }
+                                else
+                                {
+                                    Sequence.Add(alphabet.ToString(), label);
+                                }
+                            }
+                            SequencesCollection.Add(Sequence);
+                        }
                     }
                 }
                 return SequencesCollection;
             }
-            return null;
+            return SequencesCollection;
         }
 
         /// <summary>
@@ -201,57 +203,63 @@ namespace SimpleMultiSequenceLearning
 
             Console.WriteLine("Enter Cancer Sequence:   *note format->AAAAVVV {AlphabeticSequence}");
             var userInput = Console.ReadLine();
-            while (!userInput.Equals("q") && userInput != "Q")
+            while (userInput != null)
             {
-                var ElementSDRs = HelperMethod_Alphabets.PredictInputSequence(userInput, false);
-                List<string> possibleClasses = new List<string>();
-
-                for (int i = 0; i < userInput.Length; i++)
+                if ((userInput !="q") && (userInput != "Q"))
                 {
+                    var ElementSDRs = HelperMethod_Alphabets.PredictInputSequence(userInput, false);
+                    List<string> possibleClasses = new List<string>();
 
-                    var element = userInput.ElementAt(i);
-                    var elementSDR = HelperMethod_Alphabets.PredictInputSequence(element.ToString(), true);
-
-                    var lyr_Output = trained_CortexLayer.Compute(elementSDR[0], false) as ComputeCycle;
-                    var classifierPrediction = trained_Classifier.GetPredictedInputValues(lyr_Output.PredictiveCells.ToArray(), 5);
-
-                    if (classifierPrediction.Count > 0)
+                    for (int i = 0; i < userInput.Length; i++)
                     {
 
-                        foreach (var prediction in classifierPrediction)
+                        var element = userInput.ElementAt(i);
+                        var elementSDR = HelperMethod_Alphabets.PredictInputSequence(element.ToString(), true);
+
+                        var lyr_Output = trained_CortexLayer.Compute(elementSDR[0], false) as ComputeCycle;
+                        if (lyr_Output != null)
                         {
-                            if (i < userInput.Length - 1)
+                            var classifierPrediction = trained_Classifier.GetPredictedInputValues(lyr_Output.PredictiveCells.ToArray(), 5);
+
+                            if (classifierPrediction.Count > 0)
                             {
-                                var nextElement = userInput.ElementAt(i + 1).ToString();
-                                var nextElementString = nextElement.Split(",")[0];
-                                if (prediction.PredictedInput.Split(",")[0] == nextElementString)
+
+                                foreach (var prediction in classifierPrediction)
                                 {
-                                    if (prediction.PredictedInput.Split(",").Length == 3)
+                                    if (i < userInput.Length - 1)
                                     {
+                                        var nextElement = userInput.ElementAt(i + 1).ToString();
+                                        var nextElementString = nextElement.Split(",")[0];
+                                        if (prediction.PredictedInput.Split(",")[0] == nextElementString)
                                         {
-                                            possibleClasses.Add(prediction.PredictedInput.Split(",")[2]);
+                                            if (prediction.PredictedInput.Split(",").Length == 3)
+                                            {
+                                                {
+                                                    possibleClasses.Add(prediction.PredictedInput.Split(",")[2]);
+                                                }
+                                            }
+                                            else if (prediction.PredictedInput.Split(",")[0] == nextElementString)
+                                            {
+                                                possibleClasses.Add(prediction.PredictedInput.Split(",")[1]);
+                                            }
                                         }
                                     }
-                                    else if (prediction.PredictedInput.Split(",")[0] == nextElementString)
-                                    {
-                                        possibleClasses.Add(prediction.PredictedInput.Split(",")[1]);
-                                    }
                                 }
+
                             }
                         }
-
                     }
-                }
 
-                var Classcounts = possibleClasses.GroupBy(x => x.Split("_")[0])
-               .Select(g => new { possibleClass = g.Key, Count = g.Count() })
-               .ToList();
-                foreach (var class_ in Classcounts)
-                {
-                    Console.WriteLine($"Predicted Class : {class_.possibleClass.Split("_")[0]} \t votes: {class_.Count}");
+                    var Classcounts = possibleClasses.GroupBy(x => x.Split("_")[0])
+                   .Select(g => new { possibleClass = g.Key, Count = g.Count() })
+                   .ToList();
+                    foreach (var class_ in Classcounts)
+                    {
+                        Console.WriteLine($"Predicted Class : {class_.possibleClass.Split("_")[0]} \t votes: {class_.Count}");
+                    }
+                    Console.WriteLine("Enter Next Sequence :");
+                    userInput = Console.ReadLine();
                 }
-                Console.WriteLine("Enter Next Sequence :");
-                userInput = Console.ReadLine();
             }
         }
 

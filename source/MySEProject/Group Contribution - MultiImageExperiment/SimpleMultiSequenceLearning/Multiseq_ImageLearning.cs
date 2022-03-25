@@ -66,7 +66,7 @@ namespace SimpleMultiSequenceLearning
                 PredictedSegmentDecrement = 0.1
             };
 
-           ImageEncoder imageEncoder = new ImageEncoder(new BinarizerParams { ImageWidth = height, ImageHeight = width });
+            ImageEncoder imageEncoder = new ImageEncoder(new BinarizerParams { ImageWidth = height, ImageHeight = width });
 
             return RunImageTraining(inputBits, cfg, imageEncoder, Sequences);
         }
@@ -93,21 +93,21 @@ namespace SimpleMultiSequenceLearning
 
             TemporalMemory tm = new TemporalMemory();
 
-            HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs*10, (isStable, numPatterns, actColAvg, seenInputs) =>
-            {
-                if (isStable)
-                    // Event should be fired when entering the stable state.
-                    Debug.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
-                else
-                    // Ideal SP should never enter unstable state after stable state.
-                    Debug.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+            HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs * 10, (isStable, numPatterns, actColAvg, seenInputs) =>
+              {
+                  if (isStable)
+                      // Event should be fired when entering the stable state.
+                      Debug.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+                  else
+                      // Ideal SP should never enter unstable state after stable state.
+                      Debug.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
 
-                // We are not learning in instable state.
-                isInStableState = isStable;
+                  // We are not learning in instable state.
+                  isInStableState = isStable;
 
-                // Clear active and predictive cells.
-                //tm.Reset(mem);
-            }, numOfCyclesToWaitOnChange: 50);
+                  // Clear active and predictive cells.
+                  //tm.Reset(mem);
+              }, numOfCyclesToWaitOnChange: 50);
 
 
             SpatialPoolerMT sp = new SpatialPoolerMT(hpc);
@@ -198,65 +198,68 @@ namespace SimpleMultiSequenceLearning
 
                         var lyrOut = layer1.Compute(input, true) as ComputeCycle;
 
-                        var activeColumns = layer1.GetResult("sp") as int[];
-
-                        previousInputs.Add(input.ToString());
-                        if (previousInputs.Count > (maxPrevInputs + 1))
-                            previousInputs.RemoveAt(0);
-
-                        // In the pretrained SP with HPC, the TM will quickly learn cells for patterns
-                        // In that case the starting sequence 4-5-6 might have the sam SDR as 1-2-3-4-5-6,
-                        // Which will result in returning of 4-5-6 instead of 1-2-3-4-5-6.
-                        // HtmClassifier allways return the first matching sequence. Because 4-5-6 will be as first
-                        // memorized, it will match as the first one.
-                        if (previousInputs.Count < maxPrevInputs)
-                            continue;
-
-                        string key = GetKey(previousInputs, input, sequenceKeyPair.Key);
-
-                        List<Cell> actCells;
-
-                        if (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count)
+                        if (lyrOut != null)
                         {
-                            actCells = lyrOut.ActiveCells;
-                        }
-                        else
-                        {
-                            actCells = lyrOut.WinnerCells;
-                        }
+                            var activeColumns = layer1.GetResult("sp") as int[];
 
-                        cls.Learn(key, actCells.ToArray());
+                            previousInputs.Add(input.ToString());
+                            if (previousInputs.Count > (maxPrevInputs + 1))
+                                previousInputs.RemoveAt(0);
 
-                        Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
-                        Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+                            // In the pretrained SP with HPC, the TM will quickly learn cells for patterns
+                            // In that case the starting sequence 4-5-6 might have the sam SDR as 1-2-3-4-5-6,
+                            // Which will result in returning of 4-5-6 instead of 1-2-3-4-5-6.
+                            // HtmClassifier allways return the first matching sequence. Because 4-5-6 will be as first
+                            // memorized, it will match as the first one.
+                            if (previousInputs.Count < maxPrevInputs)
+                                continue;
 
-                        //
-                        // If the list of predicted values from the previous step contains the currently presenting value,
-                        // we have a match.
-                        if (lastPredictedValues.Contains(key))
-                        {
-                            matches++;
-                            Debug.WriteLine($"Match. Actual value: {key} - Predicted value: {lastPredictedValues.FirstOrDefault(key)}.");
-                        }
-                        else
-                            Debug.WriteLine($"Missmatch! Actual value: {key} - Predicted values: {String.Join(',', lastPredictedValues)}");
+                            string key = GetKey(previousInputs, input, sequenceKeyPair.Key);
 
-                        if (lyrOut.PredictiveCells.Count > 0)
-                        {
-                            //var predictedInputValue = cls.GetPredictedInputValue(lyrOut.PredictiveCells.ToArray());
-                            var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+                            List<Cell> actCells;
 
-                            foreach (var item in predictedInputValues)
+                            if (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count)
                             {
-                                Debug.WriteLine($"Current Input: {input} \t| Predicted Input: {item.PredictedInput} - {item.Similarity}");
+                                actCells = lyrOut.ActiveCells;
+                            }
+                            else
+                            {
+                                actCells = lyrOut.WinnerCells;
                             }
 
-                            lastPredictedValues = predictedInputValues.Select(v => v.PredictedInput).ToList();
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"NO CELLS PREDICTED for next cycle.");
-                            lastPredictedValues = new List<string>();
+                            cls.Learn(key, actCells.ToArray());
+
+                            Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
+                            Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+
+                            //
+                            // If the list of predicted values from the previous step contains the currently presenting value,
+                            // we have a match.
+                            if (lastPredictedValues.Contains(key))
+                            {
+                                matches++;
+                                Debug.WriteLine($"Match. Actual value: {key} - Predicted value: {lastPredictedValues.FirstOrDefault(key)}.");
+                            }
+                            else
+                                Debug.WriteLine($"Missmatch! Actual value: {key} - Predicted values: {String.Join(',', lastPredictedValues)}");
+
+                            if (lyrOut.PredictiveCells.Count > 0)
+                            {
+                                //var predictedInputValue = cls.GetPredictedInputValue(lyrOut.PredictiveCells.ToArray());
+                                var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+
+                                foreach (var item in predictedInputValues)
+                                {
+                                    Debug.WriteLine($"Current Input: {input} \t| Predicted Input: {item.PredictedInput} - {item.Similarity}");
+                                }
+
+                                lastPredictedValues = predictedInputValues.Select(v => v.PredictedInput).ToList();
+                            }
+                            else
+                            {
+                                Debug.WriteLine($"NO CELLS PREDICTED for next cycle.");
+                                lastPredictedValues = new List<string>();
+                            }
                         }
                     }
 
@@ -307,17 +310,16 @@ namespace SimpleMultiSequenceLearning
             public List<ClassifierResult<string>> Predict(string input)
             {
                 var lyrOut = this.Layer.Compute(input, false) as ComputeCycle;
-
                 List<ClassifierResult<string>> predictedInputValues = this.Classifier.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
-
                 return predictedInputValues;
             }
-
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
             public Connections Connections { get; set; }
 
             public CortexLayer<object, object> Layer { get; set; }
 
             public HtmClassifier<string, ComputeCycle> Classifier { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         }
 
         /// <summary>

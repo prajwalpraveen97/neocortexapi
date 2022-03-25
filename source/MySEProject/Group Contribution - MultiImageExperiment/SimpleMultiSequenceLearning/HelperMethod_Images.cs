@@ -83,7 +83,9 @@ namespace SimpleMultiSequenceLearning
 
                 Console.WriteLine("Input an Image Here.....(Drag and Drop image here) \n");
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 string TestingImage = (Console.ReadLine().Trim('"'));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
 
                 if (TestingImage != null)

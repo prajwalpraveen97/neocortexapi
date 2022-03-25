@@ -204,65 +204,68 @@ namespace SimpleMultiSequenceLearning
 
                         var lyrOut = layer1.Compute(input, true) as ComputeCycle;
 
-                        var activeColumns = layer1.GetResult("sp") as int[];
-
-                        previousInputs.Add(input.ToString());
-                        if (previousInputs.Count > (maxPrevInputs + 1))
-                            previousInputs.RemoveAt(0);
-
-                        // In the pretrained SP with HPC, the TM will quickly learn cells for patterns
-                        // In that case the starting sequence 4-5-6 might have the sam SDR as 1-2-3-4-5-6,
-                        // Which will result in returning of 4-5-6 instead of 1-2-3-4-5-6.
-                        // HtmClassifier allways return the first matching sequence. Because 4-5-6 will be as first
-                        // memorized, it will match as the first one.
-                        if (previousInputs.Count < maxPrevInputs)
-                            continue;
-
-                        string key = GetKey(previousInputs, input, sequenceKeyPair.Key);
-
-                        List<Cell> actCells;
-
-                        if (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count)
+                        if (lyrOut != null)
                         {
-                            actCells = lyrOut.ActiveCells;
-                        }
-                        else
-                        {
-                            actCells = lyrOut.WinnerCells;
-                        }
+                            var activeColumns = layer1.GetResult("sp") as int[];
 
-                        cls.Learn(key, actCells.ToArray());
+                            previousInputs.Add(input.ToString());
+                            if (previousInputs.Count > (maxPrevInputs + 1))
+                                previousInputs.RemoveAt(0);
 
-                        Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
-                        Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+                            // In the pretrained SP with HPC, the TM will quickly learn cells for patterns
+                            // In that case the starting sequence 4-5-6 might have the sam SDR as 1-2-3-4-5-6,
+                            // Which will result in returning of 4-5-6 instead of 1-2-3-4-5-6.
+                            // HtmClassifier allways return the first matching sequence. Because 4-5-6 will be as first
+                            // memorized, it will match as the first one.
+                            if (previousInputs.Count < maxPrevInputs)
+                                continue;
 
-                        //
-                        // If the list of predicted values from the previous step contains the currently presenting value,
-                        // we have a match.
-                        if (lastPredictedValues.Contains(key))
-                        {
-                            matches++;
-                            Debug.WriteLine($"Match. Actual value: {key} - Predicted value: {lastPredictedValues.FirstOrDefault(key)}.");
-                        }
-                        else
-                            Debug.WriteLine($"Missmatch! Actual value: {key} - Predicted values: {String.Join(',', lastPredictedValues)}");
+                            string key = GetKey(previousInputs, input, sequenceKeyPair.Key);
 
-                        if (lyrOut.PredictiveCells.Count > 0)
-                        {
-                            //var predictedInputValue = cls.GetPredictedInputValue(lyrOut.PredictiveCells.ToArray());
-                            var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+                            List<Cell> actCells;
 
-                            foreach (var item in predictedInputValues)
+                            if (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count)
                             {
-                                Debug.WriteLine($"Current Input: {input} \t| Predicted Input: {item.PredictedInput} - {item.Similarity}");
+                                actCells = lyrOut.ActiveCells;
+                            }
+                            else
+                            {
+                                actCells = lyrOut.WinnerCells;
                             }
 
-                            lastPredictedValues = predictedInputValues.Select(v => v.PredictedInput).ToList();
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"NO CELLS PREDICTED for next cycle.");
-                            lastPredictedValues = new List<string>();
+                            cls.Learn(key, actCells.ToArray());
+
+                            Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
+                            Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+
+                            //
+                            // If the list of predicted values from the previous step contains the currently presenting value,
+                            // we have a match.
+                            if (lastPredictedValues.Contains(key))
+                            {
+                                matches++;
+                                Debug.WriteLine($"Match. Actual value: {key} - Predicted value: {lastPredictedValues.FirstOrDefault(key)}.");
+                            }
+                            else
+                                Debug.WriteLine($"Missmatch! Actual value: {key} - Predicted values: {String.Join(',', lastPredictedValues)}");
+
+                            if (lyrOut.PredictiveCells.Count > 0)
+                            {
+                                //var predictedInputValue = cls.GetPredictedInputValue(lyrOut.PredictiveCells.ToArray());
+                                var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+
+                                foreach (var item in predictedInputValues)
+                                {
+                                    Debug.WriteLine($"Current Input: {input} \t| Predicted Input: {item.PredictedInput} - {item.Similarity}");
+                                }
+
+                                lastPredictedValues = predictedInputValues.Select(v => v.PredictedInput).ToList();
+                            }
+                            else
+                            {
+                                Debug.WriteLine($"NO CELLS PREDICTED for next cycle.");
+                                lastPredictedValues = new List<string>();
+                            }
                         }
                     }
 
@@ -313,17 +316,17 @@ namespace SimpleMultiSequenceLearning
             public List<ClassifierResult<string>> Predict(double input)
             {
                 var lyrOut = this.Layer.Compute(input, false) as ComputeCycle;
-
                 List<ClassifierResult<string>> predictedInputValues = this.Classifier.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
-
                 return predictedInputValues;
             }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
             public Connections Connections { get; set; }
 
             public CortexLayer<object, object> Layer { get; set; }
 
             public HtmClassifier<string, ComputeCycle> Classifier { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         }
 
         /// <summary>
@@ -527,72 +530,76 @@ namespace SimpleMultiSequenceLearning
                         List<Cell> actCells = new List<Cell>();
                         var lyrOut = new ComputeCycle();
 
-                        lyrOut = layer1.Compute(ElementSdr, learn) as ComputeCycle;
-                        Debug.WriteLine(string.Join(',', lyrOut.ActivColumnIndicies));
-
-                        // Active Cells
-                        actCells = (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count) ? lyrOut.ActiveCells : lyrOut.WinnerCells;
-
-                        cls.Learn(observationLabel, actCells.ToArray());
-
-                        // CLASS VOTING IS USED FOR SEQUENCE CLASSIFICATION EXPERIMENT i.e CANCER SEQUENCE CLASSIFICATION EXPERIMENT
-                        if (!classVotingEnabled)
+                        if (lyrOut != null)
                         {
+                            lyrOut = layer1.Compute(ElementSdr, learn) as ComputeCycle;
 
-                            if (lastPredictedValue == observationLabel && lastPredictedValue != "")
-                            {
-                                ElementMatches++;
-                                Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
-                            }
-                            else
-                            {
-                                Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
-                            }
-                        }
-                        else
-                        {
-                            if (lastPredictedValueList.Contains(observationLabel))
-                            {
-                                ElementMatches++;
-                                lastPredictedValueList.Clear();
-                                Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
-                            }
-                            else
-                            {
-                                Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
-                            }
-                        }
-                        Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
-                        Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+                            Debug.WriteLine(string.Join(',', lyrOut.ActivColumnIndicies));
 
-                        if (learn == false)
-                            Debug.WriteLine($"Inference mode");
-                        if (lyrOut.PredictiveCells.Count > 0)
-                        {
-                            var predictedInputValue = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+                            // Active Cells
+                            actCells = (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count) ? lyrOut.ActiveCells : lyrOut.WinnerCells;
 
-                            Debug.WriteLine($"Current Input: {observationLabel}");
-                            Debug.WriteLine("The predictions with similarity greater than 50% are");
+                            cls.Learn(observationLabel, actCells.ToArray());
 
-                            foreach (var t in predictedInputValue)
-                            {
-
-
-                                if (t.Similarity >= (double)50.00)
-                                {
-                                    Debug.WriteLine($"Predicted Input: {string.Join(", ", t.PredictedInput)},\tSimilarity Percentage: {string.Join(", ", t.Similarity)}, \tNumber of Same Bits: {string.Join(", ", t.NumOfSameBits)}");
-                                }
-
-                                if (classVotingEnabled)
-                                {
-                                    lastPredictedValueList.Add(t.PredictedInput);
-                                }
-
-                            }
-
+                            // CLASS VOTING IS USED FOR SEQUENCE CLASSIFICATION EXPERIMENT i.e CANCER SEQUENCE CLASSIFICATION EXPERIMENT
                             if (!classVotingEnabled)
                             {
-                                lastPredictedValue = predictedInputValue.First().PredictedInput;
+
+                                if (lastPredictedValue == observationLabel && lastPredictedValue != "")
+                                {
+                                    ElementMatches++;
+                                    Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
+                                }
+                                else
+                                {
+                                    Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
+                                }
+                            }
+                            else
+                            {
+                                if (lastPredictedValueList.Contains(observationLabel))
+                                {
+                                    ElementMatches++;
+                                    lastPredictedValueList.Clear();
+                                    Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
+                                }
+                                else
+                                {
+                                    Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
+                                }
+                            }
+                            Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
+                            Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+
+                            if (learn == false)
+                                Debug.WriteLine($"Inference mode");
+                            if (lyrOut.PredictiveCells.Count > 0)
+                            {
+                                var predictedInputValue = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+
+                                Debug.WriteLine($"Current Input: {observationLabel}");
+                                Debug.WriteLine("The predictions with similarity greater than 50% are");
+
+                                foreach (var t in predictedInputValue)
+                                {
+
+
+                                    if (t.Similarity >= (double)50.00)
+                                    {
+                                        Debug.WriteLine($"Predicted Input: {string.Join(", ", t.PredictedInput)},\tSimilarity Percentage: {string.Join(", ", t.Similarity)}, \tNumber of Same Bits: {string.Join(", ", t.NumOfSameBits)}");
+                                    }
+
+                                    if (classVotingEnabled)
+                                    {
+                                        lastPredictedValueList.Add(t.PredictedInput);
+                                    }
+
+                                }
+
+                                if (!classVotingEnabled)
+                                {
+                                    lastPredictedValue = predictedInputValue.First().PredictedInput;
+                                }
                             }
                         }
                     }
@@ -704,7 +711,7 @@ namespace SimpleMultiSequenceLearning
             SpatialPoolerMT sp = new SpatialPoolerMT(hpc);
             sp.Init(mem);
             tm.Init(mem);
-            
+
             // Please note that we do not add here TM in the layer.
             // This is omitted for practical reasons, because we first eneter the newborn-stage of the algorithm
             // In this stage we want that SP get boosted and see all elements before we start learning with TM.
@@ -732,21 +739,22 @@ namespace SimpleMultiSequenceLearning
                     var observationClass = sequence.Key; // OBSERVATION LABEL || SEQUENCE LABEL
                     var elementSDR = sequence.Value; // ALL ELEMENT IN ONE SEQUENCE 
 
-                    foreach(var Imagesets in elementSDR)
+                    foreach (var Imagesets in elementSDR)
                     {
                         Console.WriteLine($"-------------- {observationClass} ---------------");
                         // CORTEX LAYER OUTPUT with elementSDR as INPUT and LEARN = TRUE
                         //var lyrOut = layer1.Compute(Imagesets, learn);
 
                         var computeResult = layer1.Compute(Imagesets, true) as int[];
-                        var activeCellList = GetActiveCellsImages(computeResult);
-                        Console.WriteLine($"Active Cells computed from Image {observationClass}: {activeCellList}");
-
-
+                        if (computeResult != null)
+                        {
+                            var activeCellList = GetActiveCellsImages(computeResult);
+                            Console.WriteLine($"Active Cells computed from Image {observationClass}: {activeCellList}");
+                        }
                     }
                 }
 
-               
+
 
 
             }
@@ -790,71 +798,74 @@ namespace SimpleMultiSequenceLearning
                         var lyrOut = new ComputeCycle();
 
                         lyrOut = layer1.Compute(Elements, learn) as ComputeCycle;
-                        Debug.WriteLine(string.Join(',', lyrOut.ActivColumnIndicies));
-
-                        // Active Cells
-                        actCells = (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count) ? lyrOut.ActiveCells : lyrOut.WinnerCells;
-
-                        cls.Learn(observationLabel, actCells.ToArray());
-
-                        // CLASS VOTING IS USED FOR SEQUENCE CLASSIFICATION EXPERIMENT i.e CANCER SEQUENCE CLASSIFICATION EXPERIMENT
-                        if (!classVotingEnabled)
+                        if (lyrOut != null)
                         {
+                            Debug.WriteLine(string.Join(',', lyrOut.ActivColumnIndicies));
 
-                            if (lastPredictedValue == observationLabel && lastPredictedValue != "")
-                            {
-                                ElementMatches++;
-                                Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
-                            }
-                            else
-                            {
-                                Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
-                            }
-                        }
-                        else
-                        {
-                            if (lastPredictedValueList.Contains(observationLabel))
-                            {
-                                ElementMatches++;
-                                lastPredictedValueList.Clear();
-                                Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
-                            }
-                            else
-                            {
-                                Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
-                            }
-                        }
-                        Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
-                        Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+                            // Active Cells
+                            actCells = (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count) ? lyrOut.ActiveCells : lyrOut.WinnerCells;
 
-                        if (learn == false)
-                            Debug.WriteLine($"Inference mode");
-                        if (lyrOut.PredictiveCells.Count > 0)
-                        {
-                            var predictedInputValue = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+                            cls.Learn(observationLabel, actCells.ToArray());
 
-                            Debug.WriteLine($"Current Input: {observationLabel}");
-                            Debug.WriteLine("The predictions with similarity greater than 50% are");
-
-                            foreach (var t in predictedInputValue)
-                            {
-
-
-                                if (t.Similarity >= (double)50.00)
-                                {
-                                    Debug.WriteLine($"Predicted Input: {string.Join(", ", t.PredictedInput)},\tSimilarity Percentage: {string.Join(", ", t.Similarity)}, \tNumber of Same Bits: {string.Join(", ", t.NumOfSameBits)}");
-                                }
-
-                                if (classVotingEnabled)
-                                {
-                                    lastPredictedValueList.Add(t.PredictedInput);
-                                }
-
-                            }
-
+                            // CLASS VOTING IS USED FOR SEQUENCE CLASSIFICATION EXPERIMENT i.e CANCER SEQUENCE CLASSIFICATION EXPERIMENT
                             if (!classVotingEnabled)
                             {
-                                lastPredictedValue = predictedInputValue.First().PredictedInput;
+
+                                if (lastPredictedValue == observationLabel && lastPredictedValue != "")
+                                {
+                                    ElementMatches++;
+                                    Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
+                                }
+                                else
+                                {
+                                    Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
+                                }
+                            }
+                            else
+                            {
+                                if (lastPredictedValueList.Contains(observationLabel))
+                                {
+                                    ElementMatches++;
+                                    lastPredictedValueList.Clear();
+                                    Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
+                                }
+                                else
+                                {
+                                    Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
+                                }
+                            }
+                            Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
+                            Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+
+                            if (learn == false)
+                                Debug.WriteLine($"Inference mode");
+                            if (lyrOut.PredictiveCells.Count > 0)
+                            {
+                                var predictedInputValue = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+
+                                Debug.WriteLine($"Current Input: {observationLabel}");
+                                Debug.WriteLine("The predictions with similarity greater than 50% are");
+
+                                foreach (var t in predictedInputValue)
+                                {
+
+
+                                    if (t.Similarity >= (double)50.00)
+                                    {
+                                        Debug.WriteLine($"Predicted Input: {string.Join(", ", t.PredictedInput)},\tSimilarity Percentage: {string.Join(", ", t.Similarity)}, \tNumber of Same Bits: {string.Join(", ", t.NumOfSameBits)}");
+                                    }
+
+                                    if (classVotingEnabled)
+                                    {
+                                        lastPredictedValueList.Add(t.PredictedInput);
+                                    }
+
+                                }
+
+                                if (!classVotingEnabled)
+                                {
+                                    lastPredictedValue = predictedInputValue.First().PredictedInput;
+                                }
                             }
                         }
                     }

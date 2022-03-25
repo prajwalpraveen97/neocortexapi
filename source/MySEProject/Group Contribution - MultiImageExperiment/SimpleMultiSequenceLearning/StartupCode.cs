@@ -12,11 +12,13 @@ namespace SimpleMultiSequenceLearning
         /// Training File Paths For Images and Sequences
         /// </summary>
         /// 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         static readonly string SequenceDataFile = Path.GetFullPath(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\TrainingFiles\TrainingFile.csv");
 
         static readonly string InputPicPath = Path.GetFullPath(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\InputFolder\");
 
         static readonly string OutputPicPath = Path.GetFullPath(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\BinarizedImage\");
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <summary>
         /// Print Message During Startup of Program
@@ -100,7 +102,6 @@ namespace SimpleMultiSequenceLearning
         /// <param name="Userinput"></param>
         public void MultiSequenceLearning(int Userinput)
         {
-
             switch (Userinput)
             {
                 case 1:
