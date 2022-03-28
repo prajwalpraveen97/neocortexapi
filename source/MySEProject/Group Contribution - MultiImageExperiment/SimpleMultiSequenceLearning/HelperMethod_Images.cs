@@ -87,6 +87,7 @@ namespace SimpleMultiSequenceLearning
                 string TestingImage = (Console.ReadLine().Trim('"'));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+                Console.WriteLine("\n\n");
 
                 if (TestingImage != null)
                 {
@@ -101,7 +102,8 @@ namespace SimpleMultiSequenceLearning
                         }
                         var tokens = res.First().PredictedInput.Split('_');
                         var tokens2 = res.First().PredictedInput.Split('-');
-                        Console.WriteLine($"Predicted Sequence: {tokens[0]}, predicted next element {tokens2[tokens.Length - 3]}\n");
+                        //Console.WriteLine($"Predicted Sequence: {tokens[0]}, predicted next element {tokens2[tokens.Length - 3]}\n");
+                        Console.WriteLine($"Predicted Sequence: {tokens[0]}\n");
                     }
                     else
                     {
@@ -162,7 +164,14 @@ namespace SimpleMultiSequenceLearning
             Console.WriteLine("------------------------End of PredictNextElement ------------------------");
         }
 
-
+        /// <summary>
+        /// MultiSequenceLearning_Images will Read Images from Solution Folder and Binarize the images
+        /// followed by training of Images
+        /// </summary>
+        /// <param name="InputPicPath"></param>
+        /// <param name="OutputPicPath"></param>
+        /// <param name="imageheight"></param>
+        /// <param name="imagewidth"></param>
         public void MultiSequenceLearning_Images(string InputPicPath,string OutputPicPath,int imageheight, int imagewidth )
         {
             MultiSequenceLearning experiment = new MultiSequenceLearning();

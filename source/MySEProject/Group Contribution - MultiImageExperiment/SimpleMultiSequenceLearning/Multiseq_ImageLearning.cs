@@ -273,7 +273,7 @@ namespace SimpleMultiSequenceLearning
                     if (accuracy >= maxPossibleAccuraccy)
                     {
                         maxMatchCnt++;
-                        Debug.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
+                        Debug.WriteLine($"100% accuracy reached {maxMatchCnt} times.");
 
                         //
                         // Experiment is completed if we are 30 cycles long at the 100% accuracy.
