@@ -99,6 +99,17 @@ namespace SimpleMultiSequenceLearning
 
             TemporalMemory tm = new TemporalMemory();
 
+            DateTime now = DateTime.Now;
+            string filename = now.ToString("g");
+            filename = "MultiSequenceNumbers_" + filename.Split(" ")[0] + "_" + now.Ticks.ToString() + ".txt";
+
+            string path = System.AppDomain.CurrentDomain.BaseDirectory + "\\Training Logs\\";
+
+            using (StreamWriter swOutput = File.CreateText(path + filename))
+            {
+                swOutput.WriteLine($"********************   LOG   ***********************");
+            }
+
             HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs * 150, (isStable, numPatterns, actColAvg, seenInputs) =>
             {
                 if (isStable)
@@ -272,23 +283,33 @@ namespace SimpleMultiSequenceLearning
                     // The first element (a single element) in the sequence cannot be predicted
                     double maxPossibleAccuraccy = (double)((double)sequenceKeyPair.Value.Count - 1) / (double)sequenceKeyPair.Value.Count * 100.0;
 
-                    double accuracy = (double)matches / (double)sequenceKeyPair.Value.Count * 100.0;
+                    double accuracy = ((double)matches / (double)sequenceKeyPair.Value.Count) * 100.0;
 
                     Debug.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}%");
+
+                    path = System.AppDomain.CurrentDomain.BaseDirectory + "\\Training Logs\\" + filename;
+
+                    using (StreamWriter swOutput = File.AppendText(path))
+                    {
+                        swOutput.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}% | Label : {sequenceKeyPair.Key}");
+                    }
 
                     if (accuracy >= maxPossibleAccuraccy)
                     {
                         maxMatchCnt++;
-                        Debug.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
+                        Debug.WriteLine($"100% accuracy reached {maxMatchCnt} times.");
 
-                        //
-                        // Experiment is completed if we are 30 cycles long at the 100% accuracy.
-                        if (maxMatchCnt >= 30)
+                        if (maxMatchCnt == 80)
                         {
                             sw.Stop();
-                            Debug.WriteLine($"Sequence learned. The algorithm is in the stable state after 30 repeats with with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.Key} learning time: {sw.Elapsed}.");
+                            Debug.WriteLine($"Sequence learned. The algorithm is in the stable state with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.Key} learning time: {sw.Elapsed}.");
+                            using (StreamWriter swOutput = File.AppendText(path))
+                            {
+                                swOutput.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}% | Label : {sequenceKeyPair.Key}");
+                            }
                             break;
                         }
+
                     }
                     else if (maxMatchCnt > 0)
                     {
@@ -646,301 +667,6 @@ namespace SimpleMultiSequenceLearning
             var returnDictionary = new Dictionary<CortexLayer<object, object>, HtmClassifier<string, ComputeCycle>>();
             returnDictionary.Add(layer1, cls);
             return returnDictionary;
-        }
-
-
-
-        /// <summary>
-        ///     RunImageLearning
-        /// </summary>
-        /// <param name="height">Height of the Image Data</param>
-        /// <param name="width">Width of Image</param>
-        /// <param name="sequences">Data Sequences</param>
-        //      public Dictionary<CortexLayer<object, object>, HtmClassifier<string, ComputeCycle>> RunImageLearning(List<Dictionary<string, string>> FilePath, Boolean classVotingEnabled, int height, int width)
-        //private HtmPredictionEngine RunImageLearning(int height, int width, Dictionary<string, List<string>> Sequences, Boolean classVotingEnabled)
-        public Dictionary<CortexLayer<object, object>, HtmClassifier<string, ComputeCycle>> RunImageLearning(int height, int width, Dictionary<string, List<string>> Sequences, Boolean classVotingEnabled, EncoderBase encoder)
-        {
-            // Initialize HTMModules 
-            int inputBits = height * width;
-            int numColumns = 1024;
-            int maxCycles = 30;
-
-            // HPA IS_IN_STABLE STATE FLAG
-            bool isInStableState = false;
-
-            // LEARNING ACTIVATION FLAG
-            bool learn = true;
-
-
-            // NUMBER OF NEW BORN CYCLES
-            int newbornCycle = 0;
-
-            HtmConfig cfg = new HtmConfig(new int[] { inputBits }, new int[] { numColumns });
-
-            //--------- CONNECTIONS
-            var mem = new Connections(cfg);
-
-            // HTM CLASSIFIER
-            HtmClassifier<string, ComputeCycle> cls = new HtmClassifier<string, ComputeCycle>();
-
-            var NumberofImages = GetNumberOfImages(Sequences);
-
-
-            // CORTEX LAYER
-            CortexLayer<object, object> layer1 = new CortexLayer<object, object>("L1");
-
-            TemporalMemory tm = new TemporalMemory();
-
-            HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, NumberofImages, (isStable, numPatterns, actColAvg, seenInputs) =>
-            {
-                if (isStable)
-                    // Event should be fired when entering the stable state.
-                    Debug.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
-                else
-                    // Ideal SP should never enter unstable state after stable state.
-                    Debug.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
-
-                // We are not learning in instable state.
-                isInStableState = isStable;
-
-                // Clear active and predictive cells.
-                //tm.Reset(mem);
-            }, numOfCyclesToWaitOnChange: 50);
-
-
-            SpatialPoolerMT sp = new SpatialPoolerMT(hpc);
-            sp.Init(mem);
-            tm.Init(mem);
-
-            // Please note that we do not add here TM in the layer.
-            // This is omitted for practical reasons, because we first eneter the newborn-stage of the algorithm
-            // In this stage we want that SP get boosted and see all elements before we start learning with TM.
-            // All would also work fine with TM in layer, but it would work much slower.
-            // So, to improve the speed of experiment, we first ommit the TM and then after the newborn-stage we add it to the layer.
-            // ADDING SPATIAL POOLER TO CORTEX LAYER
-            layer1.HtmModules.Add("encoder", encoder);
-            layer1.HtmModules.Add("sp", sp);
-
-
-            // CONTRAINER FOR Previous Active Columns
-            int[] prevActiveCols = new int[0];
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            // TRAINING SP till STATBLE STATE IS ACHIEVED
-            while (isInStableState == false) // STABLE CONDITION LOOP ::: LOOP - 0
-            {
-                newbornCycle++;
-                Debug.WriteLine($"-------------- Newborn Cycle {newbornCycle} ---------------");
-
-                foreach (var sequence in Sequences) // FOR EACH SEQUENCE IN SEQUNECS LOOP ::: LOOP - 1
-                {
-                    var observationClass = sequence.Key; // OBSERVATION LABEL || SEQUENCE LABEL
-                    var elementSDR = sequence.Value; // ALL ELEMENT IN ONE SEQUENCE 
-
-                    foreach (var Imagesets in elementSDR)
-                    {
-                        Console.WriteLine($"-------------- {observationClass} ---------------");
-                        // CORTEX LAYER OUTPUT with elementSDR as INPUT and LEARN = TRUE
-                        //var lyrOut = layer1.Compute(Imagesets, learn);
-
-                        var computeResult = layer1.Compute(Imagesets, true) as int[];
-                        if (computeResult != null)
-                        {
-                            var activeCellList = GetActiveCellsImages(computeResult);
-                            Console.WriteLine($"Active Cells computed from Image {observationClass}: {activeCellList}");
-                        }
-                    }
-                }
-
-
-
-
-            }
-
-            // ADDING TEMPORAL MEMEORY to CORTEX LAYER
-            layer1.HtmModules.Add("tm", tm);
-
-            string lastPredictedValue = "-1";
-            List<string> lastPredictedValueList = new List<string>();
-            double lastCycleAccuracy = 0;
-            double accuracy = 0;
-
-            List<List<string>> possibleSequence = new List<List<string>>();
-            foreach (var sequence in Sequences)  // SEQUENCE LOOP
-            {
-                int SequencesMatchCount = 0; // NUMBER OF MATCHES
-
-                double SaturatedAccuracyCount = 0;
-
-                for (int i = 0; i < maxCycles; i++) // MAXCYCLE LOOP 
-                {
-                    /*var ElementWisePrediction = new List<List<HtmClassifier<string, ComputeCycle>.ClassifierResult>>();*/
-
-
-                    //:TODO .Classifier
-
-                    var ElementWisePrediction = new List<List<HtmClassifier<string, ComputeCycle>>>();
-                    List<string> ElementWiseClasses = new List<string>();
-
-                    // ELEMENT IN SEQUENCE MATCHES COUNT
-                    int ElementMatches = 0;
-
-                    // OBSERVATION LABEl
-                    var observationLabel = sequence.Key;
-                    // ELEMENT SDR LIST FOR A SINGLE SEQUENCE
-                    var ElementSdr = sequence.Value;
-
-                    foreach (var Elements in ElementSdr) // SEQUENCE DICTIONARY LOOP
-                    {
-                        List<Cell> actCells = new List<Cell>();
-                        var lyrOut = new ComputeCycle();
-
-                        lyrOut = layer1.Compute(Elements, learn) as ComputeCycle;
-                        if (lyrOut != null)
-                        {
-                            Debug.WriteLine(string.Join(',', lyrOut.ActivColumnIndicies));
-
-                            // Active Cells
-                            actCells = (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count) ? lyrOut.ActiveCells : lyrOut.WinnerCells;
-
-                            cls.Learn(observationLabel, actCells.ToArray());
-
-                            // CLASS VOTING IS USED FOR SEQUENCE CLASSIFICATION EXPERIMENT i.e CANCER SEQUENCE CLASSIFICATION EXPERIMENT
-                            if (!classVotingEnabled)
-                            {
-
-                                if (lastPredictedValue == observationLabel && lastPredictedValue != "")
-                                {
-                                    ElementMatches++;
-                                    Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
-                                }
-                                else
-                                {
-                                    Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
-                                }
-                            }
-                            else
-                            {
-                                if (lastPredictedValueList.Contains(observationLabel))
-                                {
-                                    ElementMatches++;
-                                    lastPredictedValueList.Clear();
-                                    Debug.WriteLine($"Match. Actual value: {observationLabel} - Predicted value: {lastPredictedValue}");
-                                }
-                                else
-                                {
-                                    Debug.WriteLine($"Mismatch! Actual value: {observationLabel} - Predicted values: {lastPredictedValue}");
-                                }
-                            }
-                            Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
-                            Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
-
-                            if (learn == false)
-                                Debug.WriteLine($"Inference mode");
-                            if (lyrOut.PredictiveCells.Count > 0)
-                            {
-                                var predictedInputValue = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
-
-                                Debug.WriteLine($"Current Input: {observationLabel}");
-                                Debug.WriteLine("The predictions with similarity greater than 50% are");
-
-                                foreach (var t in predictedInputValue)
-                                {
-
-
-                                    if (t.Similarity >= (double)50.00)
-                                    {
-                                        Debug.WriteLine($"Predicted Input: {string.Join(", ", t.PredictedInput)},\tSimilarity Percentage: {string.Join(", ", t.Similarity)}, \tNumber of Same Bits: {string.Join(", ", t.NumOfSameBits)}");
-                                    }
-
-                                    if (classVotingEnabled)
-                                    {
-                                        lastPredictedValueList.Add(t.PredictedInput);
-                                    }
-
-                                }
-
-                                if (!classVotingEnabled)
-                                {
-                                    lastPredictedValue = predictedInputValue.First().PredictedInput;
-                                }
-                            }
-                        }
-                    }
-                    accuracy = ((double)ElementMatches / (NumberofImages)) * 100;
-                    Debug.WriteLine($"Cycle : {i} \t Accuracy:{accuracy}");
-
-                    if (accuracy == 100)
-                    {
-                        SequencesMatchCount++;
-                        if (SequencesMatchCount >= 30)
-                        {
-                            break;
-                        }
-                    }
-                    else if (lastCycleAccuracy == accuracy && accuracy != 0)
-                    {
-                        SaturatedAccuracyCount++;
-                        if (SaturatedAccuracyCount >= 20 && lastCycleAccuracy > 70)
-                        {
-                            Debug.WriteLine($"NO FURTHER ACCURACY CAN BE ACHIEVED");
-                            Debug.WriteLine($"Saturated Accuracy : {lastCycleAccuracy} \t Number of times repeated {SaturatedAccuracyCount}");
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        SaturatedAccuracyCount = 0;
-                        SequencesMatchCount = 0;
-                        lastCycleAccuracy = accuracy;
-                    }
-                    lastPredictedValueList.Clear();
-                }
-                tm.Reset(mem);
-                learn = true;
-            }
-            sw.Stop();
-
-            //****************DISPLAY STATUS OF EXPERIMENT
-            Debug.WriteLine("-------------------TRAINING END------------------------");
-            Debug.WriteLine("-----------------TRAINING END------------------------");
-            var returnDictionary = new Dictionary<CortexLayer<object, object>, HtmClassifier<string, ComputeCycle>>();
-
-            returnDictionary.Add(layer1, cls);
-            return returnDictionary;
-        }
-
-
-        /// <summary>
-        /// Gets the number of all unique inputs From Image Data Sets.
-        /// </summary>
-        /// <param name="sequences">Alle sequences.</param>
-        /// <returns></returns>
-        private int GetNumberOfImages(Dictionary<string, List<string>> sequences)
-        {
-            int num = 0;
-
-            foreach (var inputs in sequences)
-            {
-                //num += inputs.Value.Distinct().Count();
-                num += inputs.Value.Count;
-            }
-
-            return num;
-        }
-
-        /// <summary>
-        /// Convert int array to string for better representation
-        /// </summary>
-        /// <param name="computeResult"></param>
-        /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        private string GetActiveCellsImages(int[] computeResult)
-        {
-            string result = String.Join(",", computeResult);
-            return result;
         }
     }
 }

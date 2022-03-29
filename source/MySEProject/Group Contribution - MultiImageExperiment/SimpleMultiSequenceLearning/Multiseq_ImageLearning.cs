@@ -93,21 +93,32 @@ namespace SimpleMultiSequenceLearning
 
             TemporalMemory tm = new TemporalMemory();
 
+            DateTime now = DateTime.Now;
+            string filename = now.ToString("g");
+            filename = "MultiSequenceImage_" + filename.Split(" ")[0] + "_" + now.Ticks.ToString() + ".txt";
+
+            string path = System.AppDomain.CurrentDomain.BaseDirectory + "\\Training Logs\\";
+
+            using (StreamWriter swOutput = File.CreateText(path + filename))
+            {
+                swOutput.WriteLine($"********************   LOG   ***********************");
+            }
+
             HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs * 10, (isStable, numPatterns, actColAvg, seenInputs) =>
-              {
-                  if (isStable)
-                      // Event should be fired when entering the stable state.
-                      Debug.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
-                  else
-                      // Ideal SP should never enter unstable state after stable state.
-                      Debug.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+            {
+                if (isStable)
+                    // Event should be fired when entering the stable state.
+                    Debug.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+                else
+                    // Ideal SP should never enter unstable state after stable state.
+                    Debug.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
 
-                  // We are not learning in instable state.
-                  isInStableState = isStable;
+                // We are not learning in instable state.
+                isInStableState = isStable;
 
-                  // Clear active and predictive cells.
-                  //tm.Reset(mem);
-              }, numOfCyclesToWaitOnChange: 50);
+                // Clear active and predictive cells.
+                //tm.Reset(mem);
+            }, numOfCyclesToWaitOnChange: 50);
 
 
             SpatialPoolerMT sp = new SpatialPoolerMT(hpc);
@@ -130,7 +141,7 @@ namespace SimpleMultiSequenceLearning
 
             var lastPredictedValues = new List<string>(new string[] { "0" });
 
-            int maxCycles = 1000;
+            int maxCycles = 500;
 
             //
             // Training SP to get stable. New-born stage.
@@ -266,21 +277,31 @@ namespace SimpleMultiSequenceLearning
                     // The first element (a single element) in the sequence cannot be predicted
                     double maxPossibleAccuraccy = (double)((double)sequenceKeyPair.Value.Count - 1) / (double)sequenceKeyPair.Value.Count * 100.0;
 
-                    double accuracy = (double)matches / (double)sequenceKeyPair.Value.Count * 100.0;
+                    double accuracy = ((double)matches / (double)sequenceKeyPair.Value.Count) * 100.0;
 
                     Debug.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}%");
+
+                    path = System.AppDomain.CurrentDomain.BaseDirectory + "\\Training Logs\\" + filename;
+
+                    using (StreamWriter swOutput = File.AppendText(path))
+                    {
+                        swOutput.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}% |  Label : {sequenceKeyPair.Key} ");
+                    }
 
                     if (accuracy >= maxPossibleAccuraccy)
                     {
                         maxMatchCnt++;
                         Debug.WriteLine($"100% accuracy reached {maxMatchCnt} times.");
 
-                        //
-                        // Experiment is completed if we are 30 cycles long at the 100% accuracy.
-                        if (maxMatchCnt >= 30)
+                        if (maxMatchCnt >= 80)
                         {
                             sw.Stop();
                             Debug.WriteLine($"Sequence learned. The algorithm is in the stable state after 30 repeats with with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.Key} learning time: {sw.Elapsed}.");
+                            using (StreamWriter swOutput = File.AppendText(path))
+                            {
+                                // swOutput.WriteLine($"Cycles :{maxMatchCnt}  | Accuracy :{accuracy} | Label : {sequenceKeyPair.Key}");
+                                swOutput.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}% |  Label : {sequenceKeyPair.Key}");
+                            }
                             break;
                         }
                     }
