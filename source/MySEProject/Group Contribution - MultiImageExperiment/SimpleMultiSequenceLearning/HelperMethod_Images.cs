@@ -89,34 +89,35 @@ namespace SimpleMultiSequenceLearning
 
                 Console.WriteLine("\n\n");
 
-                if (TestingImage != null)
+                while (TestingImage != null)
                 {
-                    trained_HTM_modelImage.Reset();
-                    var res = trained_HTM_modelImage.Predict(TestingImage);
-
-                    if (res.Count > 0)
+                    if ((TestingImage != "quit") && (TestingImage != "Quit"))
                     {
-                        foreach (var pred in res)
+                        trained_HTM_modelImage.Reset();
+                        var res = trained_HTM_modelImage.Predict(TestingImage);
+
+                        if (res.Count > 0)
                         {
-                            Debug.WriteLine($"PredictedInput = {pred.PredictedInput} <---> Similarity = {pred.Similarity}\n");
+                            foreach (var pred in res)
+                            {
+                                Debug.WriteLine($"PredictedInput = {pred.PredictedInput} <---> Similarity = {pred.Similarity}\n");
+                            }
+                            var tokens = res.First().PredictedInput.Split('_');
+                            var tokens2 = res.First().PredictedInput.Split('-');
+                            //Console.WriteLine($"Predicted Sequence: {tokens[0]}, predicted next element {tokens2[tokens.Length - 3]}\n");
+                            Console.WriteLine($"Predicted Sequence: {tokens[0]}\n");
                         }
-                        var tokens = res.First().PredictedInput.Split('_');
-                        var tokens2 = res.First().PredictedInput.Split('-');
-                        //Console.WriteLine($"Predicted Sequence: {tokens[0]}, predicted next element {tokens2[tokens.Length - 3]}\n");
-                        Console.WriteLine($"Predicted Sequence: {tokens[0]}\n");
+                        else
+                        {
+                            Console.WriteLine("Invalid Match..... \n");
+                        }
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid Match..... \n");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Invalid Input \n");
-                }
 
-
+                    Console.WriteLine("Input Image to Predict :\n");
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    TestingImage = (Console.ReadLine().Trim('"'));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                }
             }
             else
             {

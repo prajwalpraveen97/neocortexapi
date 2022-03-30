@@ -2,11 +2,9 @@
 
 
  **Team Members**
-- Harish Palanivel, (harish.palanivel@stud.fra-uas.de)
-- Gaurav Honnavara Manjunath, (gaurav.honnavaramanjunath@stud.fra-uas.de)
-- Athkar Praveen Prajwal, (praveen.athkar@stud.fra-uas.de)
-
-
+- Harish Palanivel (harish.palanivel@stud.fra-uas.de)
+- Gaurav Honnavara Manjunath (gaurav.honnavaramanjunath@stud.fra-uas.de)
+- Athkar Praveen Prajwal (praveen.athkar@stud.fra-uas.de)
 
 **Project Description**
 =============
@@ -24,87 +22,52 @@ For Example :
 After Training Data Sets, if the user inputs an image such as apple or orange, it has to predict which fruit is identified.
 
 
-2.Approach and Learning
+2.Approach (Training & Prediction)
 -------------
 
-In the following Approaches, we introduce different types of Encoders in HtmPredictionEngine such as ScalarEncoder, HTM Image Encoder  for Learning Sequence of Numbers,Learning of Sequence of Alphabets and Image Data Sets.
+We introduce different types of Encoders in HtmPredictionEngine such as ScalarEncoder, HTM Image Encoder  for Learning Sequence of Numbers,Learning of Sequence of Alphabets and Image Data Sets.
 
-The learning process includes: 
-1. Reading sequences.
-2. Encoding data using encoders.
-3. Spatial Pooler Learning with Homeostatic Plasticity Controller until reaching a stable state.
-4. Learning with Spatial pooler and Temporal memory, conditional exit.
-5. Interactive testing section, output classification/prediction from input data.
+The Training & Prediction Process includes: 
+1. Reading sequences (Sequence of Numbers,Alphabers,Images).
+2. Encoding data using encoders(Scalar Encoders - Number,Alphabets ; HTM Image Encoder - Image).
+3. Encoded data given as SDR input to Spatial Pooler and train several times until it reaches stable state(Using Homeostatic Plasticity Controller for stability).
+4. Prediction of Input Sequence by Comparing with trained data and categorise the data based on observation class(Label) and Accuracy.
 
 - **Multi Sequence Learning -Numbers.**
 
 In This Approach, by making use of MultiSequence Learning Solution, we analysed how multisequence prediction algorithm works, with the existing solution we tried to modifiy the code by changing various parameters such as different sequence of numbers that were allowed to train, and the user can input the sequence of numbers that needs to be predicted.
-Also, we have changed the Configurations in HTM Prediction Engine.
+Also, we tried to change Configurations in HTM Prediction Engine.
 
+Example Datarow :
+
+```csharp
+            sequences.Add("TwoMultiple", new List<double>(new double[] { 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0 }));
+            sequences.Add("ThreeMultiple", new List<double>(new double[] { 3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0 }));
+            sequences.Add("FiveMultiple", new List<double>(new double[] { 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0 }));
+            sequences.Add("SevenMultiple", new List<double>(new double[] { 7.0, 14.0, 21.0, 28.0, 35.0, 42.0, 49.0 }));
+            sequences.Add("ElevenMultiple", new List<double>(new double[] { 11.0, 22.0, 33.0, 44.0 }));
+```
 
 (i) Input sequence of Numbers to Train Model
 
 [MultiSequenceLearning_Numbers](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Numbers.cs#L41-L45)
 
 
-(ii) Set Parameters in HTM Configuration and Train Sequence using Scalar Encoder (Which includes Stablity using HomeostaticPlasticityController)
+(ii) Setting Parameters in HTM Configuration and Train Sequence using Scalar Encoder (Which includes Stablity using HomeostaticPlasticityController)
 
-[HTM Prediction Engine Parameters](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/MultisequenceLearning.cs#L29-L60)
-
-
-Example Datarow :
-
-```csharp
-            sequences.Add("TwoMultiple", new List<double>(new double[] { 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 4.0, 12.0 }));
-            sequences.Add("ThreeMultiple", new List<double>(new double[] { 3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0, 6.0, 18.0 }));
-            sequences.Add("FiveMultiple", new List<double>(new double[] { 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 15.0, 30.0 }));
-            sequences.Add("SevenMultiple", new List<double>(new double[] { 7.0, 14.0, 21.0, 28.0, 35.0, 42.0, 49.0, 14.0, 35.0 }));
-            sequences.Add("ElevenMultiple", new List<double>(new double[] { 11.0, 22.0, 33.0, 44.0, 11.0, 22.0  }));
-```
+[Training](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/MultisequenceLearning.cs#L29-L304)
 
 
-###### **DataFormat - [Number Sequence] -> [Sequence Class] Sequences - Multi Sequence **
+(iii) Predition Algoritm for Sequence of Numbers
+
+[Prediction](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Numbers.cs#L86-L107)
 
 - **Multi Sequence Learning -Alphabets.**
 
-After we analysed MultiSequence Learning for Sequence of Numbers, we moved further to Train and Predict Sequence of Alphabets.
-In This Approach, the sequence of alphabets were stored in .csv file(Cancer Peptide DataSet) and identified those sequences with different labels. The Solution was modified to read these sequence of Alphabets from .csv file and Train Alphabets by making use of AlphabetsEncoder and HTM Prediction Algorithm.
+After we analysed MultiSequence Learning for Sequence of Numbers, we moved further to Train and Predict Sequence of Alphabet.
+In This Approach, the sequence of alphabets were stored in .csv file and identified those sequences with different labels. The Solution was modified to read these sequence of Alphabets from .csv file and Train Alphabets by making use of AlphabetsEncoder(Scalar Encoder) and HTM Prediction Algoritm.Prediction algorithm was developed to predict the trained sequences where the similarity matrix generated is compared with each of the SDRs of the Sequence learned during the training phase and based on the accuracy and observation class (Label), the Sequence is predicted
 
-
-(i) Input sequence of Alphabets from .csv File to Train Model
-
-[Training Files - Alphabets](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/TrainingFiles/TrainingFile.csv)
-
-
-[ReadSequencesDataFromCSV](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Alphabets.cs#L40-L80)
-
-
-(ii) Set Parameters in HTM Configuration and Train Sequence using FetchAlphabetEncoder (Which includes Stablity using HomeostaticPlasticityController)
-
-[TrainEncodeSequencesFromCSV](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Alphabets.cs#L88-L120)
-
-[RunAlphabetsLearning](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/MultisequenceLearning.cs#L378-L642)
-
-
-Information regarding the dataset:
-
-Membranolytic anticancer peptides (ACPs) are drawing increasing attention as potential future therapeutics against cancer, due to their ability to hinder the development of cellular resistance and their potential to overcome common hurdles of chemotherapy, e.g., side effects and cytotoxicity.
-This dataset contains information on peptides (annotated for their one-letter amino acid code) and their anticancer activity on breast and lung cancer cell lines.
-Two peptide datasets targeting breast and lung cancer cells were assembled and curated manually from CancerPPD. EC50, IC50, LD50 and LC50 annotations on breast and lung cancer cells were retained (breast cell lines: MCF7 = 57%, MDA-MB-361 = 11%, MT-1 = 9%; lung cell lines: H-1299 = 45%, A-549 = 17.7%); mg ml−1 values were converted to μM units. 
-Linear and l-chiral peptides were retained, while cyclic, mixed or d-chiral peptides were discarded. In the presence of both amidated and non-amidated data for the same sequence, only the value referred to the amidated peptide was retained. 
-Peptides were split into three classes for model training: (1) very active (EC/IC/LD/LC50 ≤ 5 μM), (2) moderately active (EC/IC/LD/LC50 values up to 50 μM) and (3) inactive (EC/IC/LD/LC50 > 50 μM) peptides. 
-Duplicates with conflicting class annotations were compared manually to the original sources, and, if necessary, corrected. 
-If multiple class annotations were present for the same sequence, the most frequently represented class was chosen; in case of ties, the less active class was chosen. Since the CancerPPD is biased towards the annotation of active peptides, we built a set of presumably inactive peptides by randomly extracting 750 alpha-helical sequences from crystal structures deposited in the Protein Data Bank (7–30 amino acids). 
-The datasets were used to develop neural networks model for anticancer peptide design and are provided as .csv file.
-
-Attribute Information:
-
-The dataset contains three attributes:
-1. Peptide ID
-2. One-letter amino-acid sequence
-3. Class (active, moderately active, experimental inactive, virtual inactive)
-
-Sample Cancer Peptide DataSet : 
+Example Alphabet Sequence : 
 
 ```csharp
 FAKALKALLKALKAL,inactive - exp_8
@@ -121,28 +84,27 @@ FKLAFKLAKKAFL,inactive - exp_43
 FKVKFKVKVK, inactive - exp_44
 ```
 
+(i) Encode Input sequence of Alphabets(from .CSV file)
 
-###### **[Alphabetic Sequence] -> [Sequence Class] Sequences - Multi Sequence**
+[ReadDataFromCSV](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Alphabets.cs#L40-L80)
 
+[Enode](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Alphabets.cs#L88-L120)
 
-- **Multi Sequence Learning - Image Data Sets.**
+(ii) Setting Parameters in HTM Configuration and Train Sequence using Scalar Encoder (Which includes Stablity using HomeostaticPlasticityController)
+
+[Training](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/MultisequenceLearning.cs#L378-L642)
+
+(iii) Predition Algoritm for Sequence of Alphabets
+
+[Prediction](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Alphabets.cs#L127-L155)
+
+- **Multi Sequence Learning -Image Data Sets.**
 
 After we analysed MultiSequence Learning for Sequence of Alphabets, we moved further to Train and Predict Image DataSets.
 In This Approach, the Image Data Sets are stored in local folder with subfolders categories as labels.
-Code is developed to binarize the image data sets and store in the local directory, also the sequence of image data sets that needs to be given to the HTM Prediction Engine
-is being modified with the help of Image Encoder.
+Code is developed to binarize the image data sets and store in the local directory. The HTM Image Encoder binarizes the input image and stores as array elements of zeros and ones used as SDR Input for training.
+Prediction of Image algorithm was developed, and the input image was predicted by comparing with the trained data sets and returning the prediction output based on accuracy and Observation class (Label).
 
-(i) Input Image Data Sets from Solution Directory Path  
-
-[ReadImageDataSetsFromFolder](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Images.cs#L40-L58)
-
-
-(ii) Binarize Input Image Data Sets and Train Images and prediction 
-
-[BinarizeImageTraining](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Images.cs#L60-L108)
-
-
-- **Sample Image DataSet.**
 
 ![image](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/InputFolder/Apple/Apple_1.jpg)
 ![image](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/InputFolder/Apple/Apple_2.jpg)
@@ -159,48 +121,69 @@ is being modified with the help of Image Encoder.
 ![image](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/InputFolder/Banana/Banana_3.jpg)
 ![image](https://github.com/harishpalani12/neocortexapi/blob/393f4a9e4bdb6d070322db94eecd0ed9490692cf/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/InputFolder/Banana/Banana_4.jpg)
 
+(i) Encode Input Image Data Sets from 'Input Folder' and Binarizing the Image Data sets
 
-- **Sample Binarized Output Images.**
+[Encoding & Binarization](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Images.cs#L60-L78)
 
+(ii) Setting Parameters in HTM Configuration and Train Sequence using HTM Image Encoder (Which includes Stablity using HomeostaticPlasticityController)
 
-![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Apple/Binarized_Apple_1.jpg)
-![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Avocado/Binarized_Avocado_1.jpg)
-![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Banana/Binarized_Banana_1.jpg)
-![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Apple/Binarized_Apple_3.jpg)
-![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Banana/Binarized_Banana_3.jpg)
-![image](https://github.com/prajwalpraveen97/neocortexapi/blob/prajwalpraveen97_ML/source/MySEProject/Group%20Contribution%20-%20MultiImageExperiment/SimpleMultiSequenceLearning/BinarizedImage/Avocado/Binarized_Avocado_3.jpg)
+[Training](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/Multiseq_ImageLearning.cs#L37-L322)
 
+(iii) Predition Algoritm for Sequence of Alphabets
 
-###### **[Image Data Sets] -> [Image Data Set Class] Sequences - Multi Sequence**
+[Prediction](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/SimpleMultiSequenceLearning/HelperMethod_Images.cs#L92-L114)
 
-
- 3.Output Results
+ 3.Results
 -------------
 
-**Work Pending....**
+#### 1.Multi Sequence Learning -Numbers.
 
 
- 4.Goals Achieved
+(i) The Below Figure shows the training accuracy for a sequence of numbers for five sequences
+
+![image](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/Documentation/Images/Training%20Accuracy%20%E2%80%93%20Sequence%20of%20Numbers.jpg)
+
+(ii)Figure below shows the prediction for the sequence of Numbers for the trained data sequence.
+
+![image](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/Documentation/Images/Prediction%20%E2%80%93%20Sequence%20of%20Numbers.jpg)
+
+#### 2.Multi Sequence Learning -Alphabets.
+
+(i) Figure Shows the training accuracy for a sequence of alphabets (Anticancer Peptide Sequence).
+
+![image](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/Documentation/Images/Training%20Accuracy%20%E2%80%93%20Sequence%20of%20Alphabets.jpg)
+
+(ii) Figure Shows the prediction for a particular sequence that is entered by the user.
+
+![image](https://github.com/harishpalani12/neocortexapi/blob/66d9d6a8a9f00c3d3f88b1acd65af026bd4ce9d8/source/MySEProject/SimpleMultiSequenceLearning/Documentation/Images/Prediction%20%E2%80%93%20Sequence%20of%20Alphabets.jpg)
+
+#### 3.Multi Sequence Learning -Image Data Sets.
+
+(i) Figure Shows the training accuracy for Image Data Sets
+
+![image](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/Documentation/Images/Training%20Accuracy%20%E2%80%93%20Image%20datasets.jpg)
+
+(ii)Figure shows the prediction for the input Images for the trained Image data.
+
+![image](https://github.com/harishpalani12/neocortexapi/blob/1827c9e27dcccdb5d8242989b911945711b36da5/source/MySEProject/SimpleMultiSequenceLearning/Documentation/Images/Prediction%20%E2%80%93%20Image%20Data%20Sets.jpg)
+
+ 4.Conclusion
 -------------
 
-1. Analyse and Improve Multi-Sequence Learning - Numbers
-2. Modify Existing Multi-Sequence Solution to Incorporate Multi-Sequence Learning for Set of Alphabets (Also Anti Cancer Peptide Cell Sequences)
-3. Addition of HTM Image Encoder to Multi-Sequence Learning Solution and test Image Binarization (Enode, Encode and Save )
-4. Train Image Data sets using Multi-Sequence Learning making use of HTM prediction Engine and Image Encoder (without checking the stability)
-5. Predict Image from the Trained Image data sets 
+Multi Sequence learning for Sequence of Numbers which uses Neocortex API is used as a reference model to develop a solution for Multi Sequence learning - Sequence of Alphabets and Multi Sequence learning- Image data sets. 
+
+HTM Prediction Engine was modified with different parameters to match the respective training process. 
+The Sequence of Alphabets (Anticancer Peptide Sequence) Stored as a CSV file was modified and stored as an encoded value in the dictionary using Scalar Encoder and SDR input for the Training process. A prediction algorithm was developed to predict the trained sequences where the similarity matrix generated is compared with each of the SDRs of the Sequence learned during the training phase and based on the accuracy and observation class (Label), the Sequence is predicted.
+
+HTM Image Encoder was incorporated to develop a solution that could train multiple Image data sets and a prediction algorithm that could predict input images. The HTM Image Encoder binarizes the input image and stores as array elements of zeros and ones used as SDR Input for training. 
+Prediction of Image algorithm was developed, and the input image was predicted by comparing with the trained data sets and returning the prediction output based on accuracy and Observation class (Label).
+
+We performed Multi Sequence Learning for a different sequence of data sets and could achieve up to 87.5% of accuracy in the Training Phase. 
+
+The experiments carried out helped us understand different types of encoders, such as scalar encoders and HTM Image encoders, how the Spatial pooler creates SDR inputs and computes the learning phase, and how the Homeostatic Plasticity controller helps in stabilizing the learning phase in NeoCortex API.
 
 
- 5.In-Progress
--------------
-
- Team is Working on :
- 
-
-1. Code Improvisation,Testing and Optimization 
-2. Documentation Work adding output results.
-
-
-6.References
+5.References
 -------------
 
 
